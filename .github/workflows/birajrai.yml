@@ -26,8 +26,15 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
+          
+      - name: yarn start 🥁
+        run: yarn start
+      - name: yarn build 🥁
+        run: yarn build
+        
       - name: Installing Packages 🥁
         run: npm i
+        
       
       - name: Building 🧱
         run: npm run build
