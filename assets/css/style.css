@@ -1,0 +1,201 @@
+p,
+h1,
+h2,
+h3 {
+  color: black;
+}
+
+img {
+  image-rendering: optimizeSpeed;
+}
+
+@font-face {
+  font-family: "Avenir Black";
+  src: url(../../assets/fonts/Avenir-Black.ttf);
+}
+@font-face {
+  font-family: "ringbearer";
+  src: url(../../../assets/fonts/ringbearer.ttf);
+}
+@font-face {
+  font-family: "Avenir Oblique";
+  src: url(../../../assets/fonts/Avenir-Oblique.ttf);
+}
+body,
+html {
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+  list-style: none;
+  background: rgba(216, 211, 211, 0.45);
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  padding: 10px; /* Adjust padding as needed */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.308);
+  border-radius: 20px;
+  -webkit-backdrop-filter: blur(10px);
+          backdrop-filter: blur(10px);
+  color: rgb(216, 211, 211);
+}
+.nav .logo img {
+  max-height: 40px; /* Adjust the height as needed */
+  margin-right: 10px; /* Adjust the margin for spacing */
+}
+.nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: flex-end; /* Align navigation links to the right */
+  flex: 1; /* Use remaining space */
+  gap: 10px;
+}
+.nav ul li {
+  border-radius: 5px;
+  padding: 0 15px 0;
+  background: rgba(236, 232, 232, 0.884);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.363);
+}
+.nav ul li:hover {
+  background: rgba(236, 232, 232, 0.493);
+}
+.nav ul li a {
+  color: black;
+  font-family: "Avenir Black";
+  font-size: 18px;
+  text-decoration: none;
+}
+.nav ul li a:hover {
+  color: rgb(248, 101, 47);
+  text-decoration: overline;
+}
+
+.hero {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 50px; /* Adjust the margin-top value as needed */
+}
+.hero .title .profile {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+.hero .title .profile img {
+  text-align: center;
+  width: 40px;
+  height: 40px;
+  transition: 1s ease;
+}
+.hero .title h1 {
+  color: black;
+  font-family: "ringbearer";
+  font-size: 25px;
+  text-align: center;
+}
+.hero .description h2,
+.hero .description p {
+  text-align: center;
+  font-family: "Avenir Oblique";
+}
+
+/* _projects.scss */
+.title h1 {
+  text-align: center;
+}
+
+.projects {
+  margin: 30px auto;
+  height: 73vh;
+}
+.projects .lists {
+  display: flex;
+  justify-content: center;
+}
+.projects .lists .item {
+  width: 250px;
+  list-style: circle;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.308);
+  margin: 0 10px 20px;
+  text-align: center;
+}
+.projects .lists .item:hover {
+  background: rgb(226, 226, 226);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.363);
+}
+.projects .lists .item h2 {
+  font-size: 20px;
+  font-family: "Segoe UI";
+  margin-bottom: 10px;
+  color: rgb(39, 35, 35);
+}
+.projects .lists .item h2 span {
+  display: none;
+}
+.projects .lists .item h2 img {
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+}
+.projects .lists .item li {
+  margin-bottom: 5px;
+  list-style: none;
+}
+.projects .lists .item li a {
+  color: #3498db;
+  font-weight: bold;
+  font-family: Arial;
+  text-decoration: none;
+}
+.projects .lists .item li a:hover {
+  text-decoration: underline;
+}
+.projects .lists .one h2 {
+  color: black;
+}
+.projects .lists .two h2 {
+  color: green;
+}
+.projects .lists .three h2 {
+  color: black;
+}
+
+/* _contact.scss */
+.contact {
+  text-align: center;
+  margin: 50px auto;
+  padding: 20px;
+  color: #333;
+}
+.contact .title {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+.contact .contact-details {
+  display: flex;
+  flex-direction: column;
+}
+.contact .contact-details button {
+  margin: 10px auto; /* Center the buttons horizontally */
+  padding: 10px 20px;
+  width: 150px; /* Set a fixed width for the buttons */
+  font-size: 16px;
+  cursor: pointer;
+  background-color: #3498db;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+.contact .contact-details button:hover {
+  background-color: #2980b9;
+}/*# sourceMappingURL=style.css.map */

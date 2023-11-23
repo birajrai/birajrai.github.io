@@ -1,0 +1,77 @@
+/* _projects.scss */
+.title {
+  h1 {
+    text-align: center;
+  }
+}
+.projects {
+  margin: 30px auto;
+  height: 73vh;
+  .lists {
+    display: flex;
+    justify-content: center;
+
+    .item {
+      width: 250px;
+      list-style: circle;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.308);
+      margin: 0 10px 20px;
+      text-align: center;
+      &:hover {
+        background: rgb(226, 226, 226);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.363);
+      }
+      h2 {
+        font-size: 20px;
+        font-family: "Segoe UI";
+        margin-bottom: 10px;
+        color: rgb(39, 35, 35);
+        span {
+          display: none;
+        }
+        img {
+          width: 16px;
+          height: 16px;
+          display: inline-block;
+        }
+      }
+
+      li {
+        margin-bottom: 5px;
+        list-style: none;
+        a {
+          color: #3498db;
+          font-weight: bold;
+          font-family: Arial;
+          text-decoration: none;
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+
+    .one {
+      h2 {
+        color: black;
+        img {
+        }
+      }
+    }
+
+    .two {
+      h2 {
+        color: green;
+      }
+    }
+
+    .three {
+      h2 {
+        color: black;
+      }
+    }
+  }
+}

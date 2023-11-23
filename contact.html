@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Biraj Rai - Contact</title>
+    <link rel="stylesheet" href="assets/css/style.css" />
+  </head>
+  <body>
+    <div class="nav">
+      <div class="logo">
+        <img src="assets/img/profile.png" alt="Site Logo" draggable="false" />
+      </div>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/projects.html">Projects</a></li>
+        <li><a href="/contact.html">Contact</a></li>
+      </ul>
+    </div>
+    <div class="contact">
+      <div class="title">
+        <h1>Contact Us</h1>
+      </div>
+      <div class="contact-details">
+        <button onclick="handleClick('Discord')">Discord</button>
+        <button onclick="handleClick('Email')">Email</button>
+        <button onclick="handleClick('PhoneNumber')">Phone Number</button>
+      </div>
+    </div>
+
+    <script>
+      function handleClick(contactMethod) {
+        if (contactMethod === "Email") {
+          // Example: Open the default email client with a pre-filled subject
+          window.location.href = "mailto:your@email.com?subject=Contact";
+        } else if (contactMethod === "PhoneNumber") {
+          // Example: Open the default phone app with a pre-filled number
+          window.location.href = "tel:+1234567890";
+        } else {
+          // Default action (e.g., Discord)
+          window.location.href = "discord.com/app";
+        }
+      }
+    </script>
+  </body>
+</html>

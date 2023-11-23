@@ -1,0 +1,49 @@
+.nav {
+  display: flex;
+  align-items: center;
+  padding: 10px; /* Adjust padding as needed */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.308);
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  color: rgb(216, 211, 211);
+
+  .logo {
+    img {
+      max-height: 40px; /* Adjust the height as needed */
+      margin-right: 10px; /* Adjust the margin for spacing */
+    }
+  }
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: flex-end; /* Align navigation links to the right */
+    flex: 1; /* Use remaining space */
+    gap: 10px;
+
+    li {
+      // border: 2px solid;
+      border-radius: 5px;
+      padding: 0 15px 0;
+      background: rgba(236, 232, 232, 0.884);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.363);
+      &:hover {
+        background: rgba(236, 232, 232, 0.493);
+
+      }
+
+      a {
+        color: black;
+        font-family: "Avenir Black";
+        font-size: 18px;
+        text-decoration: none;
+        &:hover {
+          color: rgb(248, 101, 47);
+          text-decoration: overline;
+        }
+      }
+    }
+  }
+}
