@@ -1,0 +1,39 @@
+.feed {
+    font-family: sans-serif;
+    margin: 20px;
+  }
+  
+  .feed h1 {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .feed ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .feed li {
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    padding: 10px;
+  }
+  
+  .feed li a:hover {
+    text-decoration: underline;
+  }
+  
+  .feed li .title {
+    font-weight: bold;
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  
+  .feed li .description {
+    margin-bottom: 0;
+  }
+  title {
+    /* display: inline-; */
+  }
