@@ -9,18 +9,6 @@ img {
   image-rendering: optimizeSpeed;
 }
 
-@font-face {
-  font-family: "Avenir Black";
-  src: url(../../assets/fonts/Avenir-Black.ttf);
-}
-@font-face {
-  font-family: "ringbearer";
-  src: url(../../../assets/fonts/ringbearer.ttf);
-}
-@font-face {
-  font-family: "Avenir Oblique";
-  src: url(../../../assets/fonts/Avenir-Oblique.ttf);
-}
 body,
 html {
   margin: 0;
@@ -33,6 +21,18 @@ html {
   background: rgba(216, 211, 211, 0.45);
 }
 
+@font-face {
+  font-family: "Avenir Black";
+  src: url(../../assets/fonts/Avenir-Black.ttf);
+}
+@font-face {
+  font-family: "ringbearer";
+  src: url(../../../assets/fonts/ringbearer.ttf);
+}
+@font-face {
+  font-family: "Avenir Oblique";
+  src: url(../../../assets/fonts/Avenir-Oblique.ttf);
+}
 .nav {
   display: flex;
   align-items: center;

@@ -7,3 +7,12 @@ h3 {
 img {
   image-rendering: optimizeSpeed;
 }
+body,
+html {
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+  user-select: none;
+  list-style: none;
+  background: rgba(216, 211, 211, 0.45);
+}
