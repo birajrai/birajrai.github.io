@@ -2,9 +2,46 @@ document.addEventListener('DOMContentLoaded', () => {
     const projectGrid = document.getElementById('projectGrid');
     const themeToggle = document.getElementById('theme-toggle');
     const scrollTopButton = document.createElement('button');
+    const heroSection = document.getElementById('home');
+    const projectsSection = document.getElementById('projects');
+
     scrollTopButton.id = 'scroll-top';
     scrollTopButton.innerHTML = '<i class="fas fa-arrow-up"></i>';
     document.body.appendChild(scrollTopButton);
+
+    // Handle navigation clicks
+    document.querySelectorAll('nav a').forEach(link => {
+        link.addEventListener('click', e => {
+            if (link.getAttribute('href').startsWith('#')) {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').slice(1);
+                const targetSection = document.getElementById(targetId);
+
+                // Hide hero section if navigating to projects
+                if (targetId === 'projects') {
+                    heroSection.style.display = 'none';
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth',
+                    });
+                } else {
+                    heroSection.style.display = 'flex';
+                    targetSection.scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+        });
+    });
+
+    // Handle URL hash on page load
+    window.addEventListener('load', () => {
+        if (window.location.hash === '#projects') {
+            heroSection.style.display = 'none';
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth',
+            });
+        }
+    });
 
     // Scroll to top functionality
     function handleScroll() {

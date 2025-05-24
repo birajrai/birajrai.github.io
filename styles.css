@@ -2,7 +2,7 @@
 @font-face {
     font-family: 'Minecraft';
     src: url('https://cdn.jsdelivr.net/gh/South-Paw/typeface-minecraft@master/font/minecraft.woff2') format('woff2'),
-         url('https://cdn.jsdelivr.net/gh/South-Paw/typeface-minecraft@master/font/minecraft.woff') format('woff');
+        url('https://cdn.jsdelivr.net/gh/South-Paw/typeface-minecraft@master/font/minecraft.woff') format('woff');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -236,7 +236,8 @@ nav {
     margin: 2rem 0;
 }
 
-.primary-button, .secondary-button {
+.primary-button,
+.secondary-button {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
@@ -258,7 +259,8 @@ nav {
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.primary-button:hover, .secondary-button:hover {
+.primary-button:hover,
+.secondary-button:hover {
     transform: translateY(-3px);
     box-shadow: var(--box-shadow);
 }
@@ -366,21 +368,19 @@ nav {
 
 /* Projects Section */
 .projects {
-    padding: calc(var(--header-height) + 2rem) 0 4rem;
+    padding: 1rem 0 4rem;
     min-height: 100vh;
-    background: var(--background-color);
+    background: var(--gradient-bg);
 }
 
 .projects .container {
-    max-width: var(--container-width);
-    margin: 0 auto;
-    padding: 0 var(--container-padding);
+    padding-top: 0;
 }
 
 .projects h2 {
     font-family: 'Minecraft', monospace;
     font-size: 2.5rem;
-    margin-bottom: 3rem;
+    margin: 1rem 0 3rem;
     text-align: center;
     color: var(--text-color);
     letter-spacing: 1px;
@@ -654,7 +654,7 @@ nav {
     :root {
         --container-padding: 1.5rem;
     }
-    
+
     .hero-content {
         gap: 3rem;
     }
@@ -794,6 +794,12 @@ section {
     scroll-margin-top: var(--header-height);
     position: relative;
     width: 100%;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+section[style*='display: none'] {
+    opacity: 0;
+    transform: translateY(-20px);
 }
 
 /* Adjust main content to account for fixed header */
