@@ -349,28 +349,49 @@ nav {
 
 .social-links {
     display: flex;
-    gap: 1.5rem;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
 }
 
 .social-links a {
     color: var(--text-color);
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     transition: var(--transition);
-    padding: 0.5rem;
-    border-radius: 50%;
+    padding: 0.4rem;
+    border-radius: 8px;
     background: var(--card-background);
-    width: 45px;
-    height: 45px;
+    width: 35px;
+    height: 35px;
     display: flex;
     align-items: center;
     justify-content: center;
     text-decoration: none;
 }
 
+/* Brand-specific colors */
+.social-links a[href*="github"]:hover {
+    color: #fff;
+    background: #333;
+}
+
+.social-links a[href*="linkedin"]:hover {
+    color: #fff;
+    background: #0A66C2;
+}
+
+.social-links a[href*="facebook"]:hover {
+    color: #fff;
+    background: #1877F2;
+}
+
+.social-links a[href*="discord"]:hover {
+    color: #fff;
+    background: #5865F2;
+}
+
 .social-links a:hover {
-    color: var(--secondary-color);
     transform: translateY(-3px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--box-shadow);
 }
 
 /* Projects Section */
