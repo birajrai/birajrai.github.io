@@ -9,15 +9,16 @@
 }
 
 :root {
-    --primary-color: #3b82f6;
-    --primary-color-dark: #2563eb;
+    /* Light Theme Colors */
+    --primary-color: #0969da;
+    --primary-color-dark: #0550ae;
     --card-bg: #ffffff;
-    --text-secondary: #64748b;
-    --tag-bg: #f1f5f9;
-    --tag-text: #475569;
+    --text-secondary: #57606a;
+    --tag-bg: #f6f8fa;
+    --tag-text: #24292f;
     --background-color: #ffffff;
-    --text-color: #2d3436;
-    --card-background: #f8f9fa;
+    --text-color: #24292f;
+    --card-background: #f6f8fa;
     --transition: all 0.3s ease;
     --section-padding: 4rem 0;
     --gradient-bg: linear-gradient(135deg, var(--background-color) 0%, var(--card-background) 100%);
@@ -25,19 +26,25 @@
     --container-width: 1200px;
     --container-padding: 2rem;
     --header-height: 4rem;
+    --accent-color: #2da44e;
+    --hover-color: #1a7f37;
 }
 
 [data-theme='dark'] {
-    --primary-color: #60a5fa;
-    --primary-color-dark: #3b82f6;
-    --card-bg: #1e293b;
-    --text-secondary: #94a3b8;
-    --tag-bg: #334155;
-    --tag-text: #e2e8f0;
-    --background-color: #111827;
-    --text-color: #f3f4f6;
-    --card-background: #1f2937;
-    --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    /* GitHub Dark Theme */
+    --primary-color: #58a6ff; /* GitHub blue */
+    --primary-color-dark: #1f6feb; /* GitHub blue darker */
+    --card-bg: #161b22; /* GitHub dark background */
+    --text-secondary: #8b949e; /* GitHub secondary text */
+    --tag-bg: #30363d; /* GitHub dark mode tag */
+    --tag-text: #c9d1d9; /* GitHub text color */
+    --background-color: #0d1117; /* GitHub dark background */
+    --text-color: #c9d1d9; /* GitHub main text */
+    --card-background: #161b22; /* GitHub dark elevated */
+    --box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    --accent-color: #238636; /* GitHub green */
+    --hover-color: #2ea043; /* GitHub green hover */
+    --gradient-bg: linear-gradient(135deg, #0d1117 0%, #161b22 100%);
 }
 
 * {
