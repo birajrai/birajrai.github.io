@@ -251,7 +251,7 @@ function animateCounters() {
 // Status Fetcher
 async function fetchDiscordStatus() {
     try {
-        const response = await fetch('https://discord-user-status.onrender.com/user/835126233455919164/');
+        const response = await fetch('https://discordstatus.dapirates.xyz/user/835126233455919164/');
         const data = await response.json();
 
         if (statusContainer) {
