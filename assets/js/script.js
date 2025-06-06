@@ -1,26 +1,16 @@
 // DOM Elements
-const loadingScreen = document.getElementById('loading-screen');
 const navbar = document.getElementById('navbar');
 const navToggle = document.getElementById('nav-toggle');
 const navMenu = document.getElementById('nav-menu');
 const scrollTopBtn = document.getElementById('scroll-top');
 const typingText = document.getElementById('typing-text');
-const contactForm = document.getElementById('contact-form');
 const skillsGrid = document.getElementById('skills-grid');
 const projectsGrid = document.getElementById('projects-grid');
 const themeToggle = document.getElementById('theme-toggle');
-const loaderPercentage = document.getElementById('loader-percentage');
-const loaderStatus = document.getElementById('loader-status');
-
-// Audio elements
-const loadingSound = document.getElementById('loadingSound');
-const clickSound = document.getElementById('clickSound');
 
 // Global Variables
 let currentSkillCategory = 'frontend';
 let currentProjectFilter = 'all';
-let isLoading = true;
-let loadingProgress = 0;
 
 // Skills Data
 const skillsData = {
@@ -195,78 +185,10 @@ function animateCounters() {
     });
 }
 
-// Sound Effects
-function playSound(soundElement) {
-    if (soundElement) {
-        soundElement.currentTime = 0;
-        soundElement.play().catch(e => console.log('Audio play failed:', e));
-    }
-}
-
-// Enhanced Loading Screen with Progress and Sound
-function initLoadingScreen() {
-    const loadingSteps = [
-        'Initializing Portfolio...',
-        'Loading Assets...',
-        'Preparing Experience...',
-        'Setting up Environment...',
-        'Almost Ready...',
-        'Welcome!',
-    ];
-
-    let currentStep = 0;
-
-    // Play loading sound
-    playSound(loadingSound);
-
-    const progressInterval = setInterval(() => {
-        loadingProgress += Math.random() * 15 + 5;
-
-        if (loadingProgress >= 100) {
-            loadingProgress = 100;
-            clearInterval(progressInterval);
-
-            setTimeout(() => {
-                hideLoadingScreen();
-            }, 500);
-        }
-
-        // Update progress display
-        if (loaderPercentage) {
-            loaderPercentage.textContent = Math.floor(loadingProgress) + '%';
-        }
-
-        // Update status text
-        if (loaderStatus && currentStep < loadingSteps.length) {
-            const stepProgress = Math.floor((loadingProgress / 100) * loadingSteps.length);
-            if (stepProgress > currentStep) {
-                currentStep = stepProgress;
-                loaderStatus.textContent = loadingSteps[Math.min(currentStep, loadingSteps.length - 1)];
-            }
-        }
-    }, 200);
-}
-
-// Loading Screen
-function hideLoadingScreen() {
-    setTimeout(() => {
-        if (loadingScreen) {
-            loadingScreen.classList.add('hidden');
-        }
-        isLoading = false;
-
-        // Start animations after loading
-        typeWriter();
-        animateCounters();
-        initScrollAnimations();
-    }, 500);
-}
-
 // Scroll to section function
 function scrollToSection(sectionId) {
     const section = document.querySelector(sectionId);
     if (section) {
-        playSound(clickSound);
         section.scrollIntoView({
             behavior: 'smooth',
             block: 'start',
@@ -283,7 +205,6 @@ function initThemeToggle() {
     updateThemeIcon(savedTheme);
 
     themeToggle.addEventListener('click', () => {
-        playSound(clickSound);
         const currentTheme = document.documentElement.getAttribute('data-theme');
         const newTheme = currentTheme === 'light' ? 'dark' : 'light';
 
@@ -308,7 +229,6 @@ function initNavigation() {
 
     // Mobile menu toggle
     navToggle.addEventListener('click', () => {
-        playSound(clickSound);
         navToggle.classList.toggle('active');
         navMenu.classList.toggle('active');
     });
@@ -316,7 +236,6 @@ function initNavigation() {
     // Close mobile menu when clicking on links
     document.querySelectorAll('.nav-link').forEach(link => {
         link.addEventListener('click', () => {
-            playSound(clickSound);
             navToggle.classList.remove('active');
             navMenu.classList.remove('active');
         });
@@ -346,7 +265,6 @@ function initNavigation() {
     // Scroll to top
     if (scrollTopBtn) {
         scrollTopBtn.addEventListener('click', () => {
-            playSound(clickSound);
             window.scrollTo({
                 top: 0,
                 behavior: 'smooth',
@@ -385,7 +303,6 @@ function initSkills() {
 
     skillCategories.forEach(category => {
         category.addEventListener('click', () => {
-            playSound(clickSound);
             const categoryName = category.getAttribute('data-category');
 
             // Update active category
@@ -437,7 +354,6 @@ function initExperienceToggle() {
 
     toggleBtns.forEach(btn => {
         btn.addEventListener('click', () => {
-            playSound(clickSound);
             const toggleType = btn.getAttribute('data-toggle');
 
             // Update active toggle button
@@ -461,7 +377,6 @@ function initProjects() {
 
     filterBtns.forEach(btn => {
         btn.addEventListener('click', () => {
-            playSound(clickSound);
             const filter = btn.getAttribute('data-filter');
 
             // Update active filter
@@ -526,115 +441,6 @@ function renderProjects() {
     }, 100);
 }
 
-// Discord Webhook Integration
-async function sendToDiscord(formData) {
-    const webhookUrl =
-        'https://discord.com/api/webhooks/1378247118619414608/VKv3ihqvptgeIeCd3t6EyVC90Rhy1PI16HsHmYKm1-flwbw1R4ctZ2Klmt8WvJsLi7EL';
-
-    const embed = {
-        title: '🚀 New Portfolio Contact Message!',
-        color: 0x6366f1,
-        fields: [
-            {
-                name: '👤 Name',
-                value: formData.name,
-                inline: true,
-            },
-            {
-                name: '📧 Email',
-                value: formData.email,
-                inline: true,
-            },
-            {
-                name: '📝 Subject',
-                value: formData.subject,
-                inline: false,
-            },
-            {
-                name: '💬 Message',
-                value: formData.message,
-                inline: false,
-            },
-        ],
-        timestamp: new Date().toISOString(),
-        footer: {
-            text: 'Biraj Rai Portfolio',
-            icon_url: 'https://placehold.co/32x32/6366f1/ffffff?text=BR',
-        },
-    };
-
-    const payload = {
-        content: '@everyone 🔔 New contact form submission!',
-        embeds: [embed],
-    };
-
-    try {
-        const response = await fetch(webhookUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(payload),
-        });
-
-        return response.ok;
-    } catch (error) {
-        console.error('Discord webhook error:', error);
-        return false;
-    }
-}
-
-// Contact Form
-function initContactForm() {
-    if (!contactForm) return;
-
-    contactForm.addEventListener('submit', async e => {
-        e.preventDefault();
-        playSound(clickSound);
-
-        const formData = new FormData(contactForm);
-        const data = Object.fromEntries(formData);
-
-        // Get submit button
-        const submitBtn = contactForm.querySelector('button[type="submit"]');
-        const originalText = submitBtn.innerHTML;
-
-        // Show loading state
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
-        submitBtn.disabled = true;
-
-        try {
-            // Send to Discord webhook
-            const success = await sendToDiscord(data);
-
-            if (success) {
-                submitBtn.innerHTML = '<i class="fas fa-check"></i> Message Sent!';
-                submitBtn.style.background = 'var(--secondary-color)';
-
-                // Reset form after success
-                setTimeout(() => {
-                    submitBtn.innerHTML = originalText;
-                    submitBtn.disabled = false;
-                    submitBtn.style.background = '';
-                    contactForm.reset();
-                }, 3000);
-            } else {
-                throw new Error('Failed to send message');
-            }
-        } catch (error) {
-            console.error('Form submission error:', error);
-            submitBtn.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Error! Try Again';
-            submitBtn.style.background = '#ef4444';
-
-            setTimeout(() => {
-                submitBtn.innerHTML = originalText;
-                submitBtn.disabled = false;
-                submitBtn.style.background = '';
-            }, 3000);
-        }
-    });
-}
-
 // Scroll Animations
 function initScrollAnimations() {
     const observerOptions = {
@@ -661,7 +467,6 @@ function initSmoothScrolling() {
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
-            playSound(clickSound);
             const target = document.querySelector(this.getAttribute('href'));
 
             if (target) {
@@ -687,27 +492,18 @@ function initParallax() {
     });
 }
 
-// Add click sounds to buttons and links
-function initClickSounds() {
-    document.querySelectorAll('button, .btn, .social-link, .project-btn').forEach(element => {
-        element.addEventListener('click', () => {
-            playSound(clickSound);
-        });
-    });
-}
-
 // Initialize everything when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    initLoadingScreen();
+    typeWriter();
+    animateCounters();
+    initScrollAnimations();
     initNavigation();
     initThemeToggle();
     initSkills();
     initExperienceToggle();
     initProjects();
-    initContactForm();
     initSmoothScrolling();
     initParallax();
-    initClickSounds();
 });
 
 // Handle page visibility change
