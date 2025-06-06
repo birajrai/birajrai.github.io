@@ -24,53 +24,17 @@ const experienceData = [
         skills: ['React', 'Node.js', 'MongoDB', 'Express.js'],
         icon: 'fas fa-briefcase',
     },
-    {
-        title: 'Discord Bot Developer',
-        company: 'Open Source Projects',
-        period: '2021 - Present',
-        description:
-            'Created and maintained Discord bots with advanced features including moderation, entertainment, and Minecraft server integration.',
-        skills: ['JavaScript', 'Discord.js', 'MongoDB', 'API Integration'],
-        icon: 'fas fa-code',
-    },
-    {
-        title: 'Self-Taught Developer',
-        company: 'Continuous Learning',
-        period: '2020 - 2022',
-        description:
-            'Started my programming journey with web development fundamentals, gradually expanding to full-stack development through online courses and projects.',
-        skills: ['HTML/CSS', 'JavaScript', 'Git', 'Problem Solving'],
-        icon: 'fas fa-laptop-code',
-    },
 ];
 
 // Education Data
 const educationData = [
     {
-        title: 'Computer Science Studies',
-        institution: 'Self-Directed Learning',
-        period: '2020 - 2024',
+        title: 'High School (+2)',
+        institution: 'Management Stream (Commerce with Mathematics & Computer Science)',
+        period: '2025 - Present',
         description:
-            'Comprehensive study of computer science fundamentals including algorithms, data structures, and software engineering principles through online platforms.',
-        skills: ['Algorithms', 'Data Structures', 'Software Engineering', 'System Design'],
-        icon: 'fas fa-graduation-cap',
-    },
-    {
-        title: 'Web Development Certification',
-        institution: 'FreeCodeCamp',
-        period: '2021',
-        description:
-            'Completed comprehensive web development curriculum covering frontend and backend technologies, responsive design, and modern frameworks.',
-        skills: ['HTML/CSS', 'JavaScript', 'React', 'Node.js'],
-        icon: 'fas fa-certificate',
-    },
-    {
-        title: 'High School',
-        institution: 'Science Stream',
-        period: '2018 - 2020',
-        description:
-            'Completed high school education with focus on mathematics and science, which provided a strong foundation for logical thinking and problem-solving.',
-        skills: ['Mathematics', 'Physics', 'Chemistry', 'Computer Science'],
+            'Studying in the Management stream with a focus on Mathematics, Computer Science, and Commerce. This helps me improve problem-solving, logical thinking, and basic knowledge of technology and finance.',
+        skills: ['Mathematics', 'Computer Science', 'Economics', 'Accounting'],
         icon: 'fas fa-book',
     },
 ];
@@ -80,7 +44,6 @@ const skillsData = {
     frontend: [
         { name: 'React', icon: 'fab fa-react' },
         { name: 'JavaScript', icon: 'fab fa-js-square' },
-        { name: 'TypeScript', icon: 'fab fa-js-square' },
         { name: 'HTML5', icon: 'fab fa-html5' },
         { name: 'CSS3', icon: 'fab fa-css3-alt' },
         { name: 'Tailwind', icon: 'fas fa-palette' },
