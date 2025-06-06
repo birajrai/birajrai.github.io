@@ -531,11 +531,11 @@ function updateThemeIcon(theme) {
     }
 }
 
-// Enhanced Navigation with improved mobile UX
+// Minimal Navigation with simplified mobile UX
 function initNavigation() {
     if (!navToggle || !navMenu) return;
 
-    // Mobile menu toggle with enhanced animations
+    // Simple mobile menu toggle
     navToggle.addEventListener('click', e => {
         e.stopPropagation();
         toggleMobileMenu();
@@ -544,7 +544,6 @@ function initNavigation() {
     // Close mobile menu when clicking on links
     document.querySelectorAll('.nav-link').forEach(link => {
         link.addEventListener('click', e => {
-            // Only close menu on mobile
             if (window.innerWidth <= 768) {
                 closeMobileMenu();
             }
@@ -565,7 +564,7 @@ function initNavigation() {
         }
     });
 
-    // Enhanced scroll effects with performance optimization
+    // Simplified scroll effects
     let lastScrollY = window.scrollY;
     let ticking = false;
 
@@ -620,13 +619,12 @@ function initNavigation() {
         if (window.innerWidth > 768 && navMenu.classList.contains('active')) {
             closeMobileMenu();
         }
-        // Reset navbar transform on desktop
         if (window.innerWidth > 768) {
             navbar.style.transform = 'translateY(0)';
         }
     });
 
-    // Scroll to top with smooth animation
+    // Scroll to top
     if (scrollTopBtn) {
         scrollTopBtn.addEventListener('click', () => {
             window.scrollTo({
@@ -636,7 +634,6 @@ function initNavigation() {
         });
     }
 
-    // Initial call to set correct state
     updateNavbar();
 }
 
@@ -654,69 +651,12 @@ function openMobileMenu() {
     navToggle.classList.add('active');
     navMenu.classList.add('active');
     document.body.classList.add('nav-open');
-
-    // Store current scroll position
-    const scrollY = window.scrollY;
-    document.body.style.top = `-${scrollY}px`;
-
-    // Animate menu items with staggered effect
-    const navLinks = navMenu.querySelectorAll('.nav-link');
-    const controls = navMenu.querySelector('.nav-controls');
-
-    navLinks.forEach((link, index) => {
-        link.style.opacity = '0';
-        link.style.transform = 'translateX(30px)';
-        setTimeout(() => {
-            link.style.transition = 'all 0.3s ease';
-            link.style.opacity = '1';
-            link.style.transform = 'translateX(0)';
-        }, index * 80 + 150);
-    });
-
-    // Animate controls
-    if (controls) {
-        controls.style.opacity = '0';
-        controls.style.transform = 'translateY(20px)';
-        setTimeout(() => {
-            controls.style.transition = 'all 0.3s ease';
-            controls.style.opacity = '1';
-            controls.style.transform = 'translateY(0)';
-        }, navLinks.length * 80 + 200);
-    }
 }
 
 function closeMobileMenu() {
     navToggle.classList.remove('active');
     navMenu.classList.remove('active');
     document.body.classList.remove('nav-open');
-
-    // Restore scroll position
-    const scrollY = document.body.style.top;
-    document.body.style.top = '';
-    if (scrollY) {
-        window.scrollTo(0, Number.parseInt(scrollY || '0') * -1);
-    }
-
-    // Reset animations
-    const navLinks = navMenu.querySelectorAll('.nav-link');
-    const controls = navMenu.querySelector('.nav-controls');
-
-    navLinks.forEach(link => {
-        link.style.transition = '';
-        link.style.opacity = '';
-        link.style.transform = '';
-    });
-
-    if (controls) {
-        controls.style.transition = '';
-        controls.style.opacity = '';
-        controls.style.transform = '';
-    }
-}
-
-// Legacy function for backward compatibility
-function closeNavMenu() {
-    closeMobileMenu();
 }
 
 // Update active navigation link
@@ -783,12 +723,12 @@ function renderSkills() {
         )
         .join('');
 
-    // Trigger animation with performance optimization
+    // Trigger animation
     setTimeout(() => {
         skillsGrid.querySelectorAll('.skill-item').forEach((item, index) => {
             setTimeout(() => {
                 item.classList.add('visible');
-            }, index * 50); // Reduced delay for better performance
+            }, index * 50);
         });
     }, 50);
 }
@@ -936,7 +876,7 @@ function renderProjects() {
         )
         .join('');
 
-    // Animate project cards with performance optimization
+    // Animate project cards
     setTimeout(() => {
         projectsGrid.querySelectorAll('.project-card').forEach((card, index) => {
             setTimeout(() => {
@@ -994,7 +934,6 @@ function initScrollAnimations() {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('visible');
-                // Unobserve after animation to improve performance
                 observer.unobserve(entry.target);
             }
         });
@@ -1032,7 +971,7 @@ function initParallax() {
         const parallaxElements = document.querySelectorAll('.hero-shapes .shape');
 
         parallaxElements.forEach((element, index) => {
-            const speed = 0.3 + index * 0.1; // Reduced speed for better performance
+            const speed = 0.3 + index * 0.1;
             element.style.transform = `translate3d(0, ${scrolled * speed}px, 0)`;
         });
 
@@ -1041,7 +980,6 @@ function initParallax() {
 
     window.addEventListener('scroll', () => {
         if (!ticking && window.innerWidth > 768) {
-            // Only on desktop for performance
             requestAnimationFrame(updateParallax);
             ticking = true;
         }
@@ -1053,7 +991,6 @@ function initReducedMotion() {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
     if (prefersReducedMotion.matches) {
-        // Disable animations for users who prefer reduced motion
         document.documentElement.style.setProperty('--transition-fast', '0s');
         document.documentElement.style.setProperty('--transition-normal', '0s');
         document.documentElement.style.setProperty('--transition-slow', '0s');
