@@ -621,8 +621,8 @@ function renderProjects() {
 function downloadResume() {
     // Create a temporary link element
     const link = document.createElement('a');
-    link.href = '/assets/resume/Biraj_Rai_Resume.pdf'; // Update this path to your actual resume file
-    link.download = 'Biraj_Rai_Resume.pdf';
+    link.href = '/assets/resume/Biraj Rai.pdf'; // Update this path to your actual resume file
+    link.download = 'Biraj Rai.pdf';
     link.target = '_blank';
 
     // Trigger download
