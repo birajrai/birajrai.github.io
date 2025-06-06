@@ -79,6 +79,10 @@
                     <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
                         <i class="fas fa-moon"></i>
                     </button>
+
+                    <button class="color-toggle" id="color-toggle" aria-label="Customize colors">
+                        <i class="fas fa-palette"></i>
+                    </button>
                 </div>
 
                 <div class="nav-toggle" id="nav-toggle">
@@ -88,6 +92,108 @@
                 </div>
             </div>
         </nav>
+
+        <!-- Color Customizer Panel -->
+        <div class="color-panel" id="color-panel">
+            <div class="color-panel-header">
+                <h3>Customize Colors</h3>
+                <button class="color-panel-close" id="color-panel-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="color-panel-content">
+                <div class="color-section">
+                    <h4>Quick Themes</h4>
+                    <div class="theme-presets">
+                        <button class="theme-preset active" data-theme="default">
+                            <div class="preset-colors">
+                                <span style="background: #6366f1"></span>
+                                <span style="background: #10b981"></span>
+                                <span style="background: #f59e0b"></span>
+                            </div>
+                            <span>Default</span>
+                        </button>
+                        <button class="theme-preset" data-theme="ocean">
+                            <div class="preset-colors">
+                                <span style="background: #0ea5e9"></span>
+                                <span style="background: #06b6d4"></span>
+                                <span style="background: #8b5cf6"></span>
+                            </div>
+                            <span>Ocean</span>
+                        </button>
+                        <button class="theme-preset" data-theme="sunset">
+                            <div class="preset-colors">
+                                <span style="background: #f97316"></span>
+                                <span style="background: #ef4444"></span>
+                                <span style="background: #eab308"></span>
+                            </div>
+                            <span>Sunset</span>
+                        </button>
+                        <button class="theme-preset" data-theme="forest">
+                            <div class="preset-colors">
+                                <span style="background: #059669"></span>
+                                <span style="background: #65a30d"></span>
+                                <span style="background: #ca8a04"></span>
+                            </div>
+                            <span>Forest</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="color-section">
+                    <h4>Custom Colors</h4>
+                    <div class="color-inputs">
+                        <div class="color-input-group">
+                            <label for="primary-color">Primary Color</label>
+                            <input type="color" id="primary-color" value="#6366f1" />
+                        </div>
+                        <div class="color-input-group">
+                            <label for="secondary-color">Secondary Color</label>
+                            <input type="color" id="secondary-color" value="#10b981" />
+                        </div>
+                        <div class="color-input-group">
+                            <label for="accent-color">Accent Color</label>
+                            <input type="color" id="accent-color" value="#f59e0b" />
+                        </div>
+                    </div>
+                </div>
+                <div class="color-section">
+                    <button class="btn btn-primary" id="reset-colors">Reset to Default</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Discord Status Tooltip -->
+        <div class="status-tooltip" id="status-tooltip">
+            <div class="tooltip-content">
+                <div class="tooltip-status">
+                    <div class="tooltip-indicator"></div>
+                    <span class="tooltip-text">Loading...</span>
+                </div>
+                <div class="tooltip-activity"></div>
+                <div class="tooltip-time"></div>
+            </div>
+        </div>
+
+        <!-- Sticky Spotify Player -->
+        <div class="spotify-player" id="spotify-player" style="display: none">
+            <div class="spotify-player-content">
+                <div class="spotify-player-info">
+                    <img src="/placeholder.svg" alt="Album Art" class="spotify-player-album" />
+                    <div class="spotify-player-details">
+                        <div class="spotify-player-song"></div>
+                        <div class="spotify-player-artist"></div>
+                    </div>
+                </div>
+                <div class="spotify-player-controls">
+                    <button class="spotify-toggle" id="spotify-toggle">
+                        <i class="fas fa-chevron-up"></i>
+                    </button>
+                    <a href="https://open.spotify.com" target="_blank" class="spotify-open">
+                        <i class="fab fa-spotify"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
 
         <!-- Main Content -->
         <main>
@@ -139,10 +245,10 @@
                             </div>
 
                             <div class="hero-buttons">
-                                <a href="#projects" class="btn btn-primary">
-                                    <span>View My Work</span>
-                                    <i class="fas fa-arrow-right"></i>
-                                </a>
+                                <button onclick="downloadResume()" class="btn btn-primary">
+                                    <span>Download Resume</span>
+                                    <i class="fas fa-download"></i>
+                                </button>
                                 <a href="#contact" class="btn btn-secondary">
                                     <span>Let's Talk</span>
                                     <i class="fas fa-comments"></i>
@@ -169,6 +275,9 @@
                             <div class="image-container">
                                 <div class="image-bg"></div>
                                 <img src="/assets/img/hero.png" alt="Biraj Rai" class="profile-img" />
+                                <div class="discord-status" id="discord-status">
+                                    <div class="status-dot"></div>
+                                </div>
                                 <div class="image-overlay">
                                     <div class="tech-icons">
                                         <i class="fab fa-react"></i>
@@ -389,14 +498,6 @@
                                 <div class="contact-details">
                                     <h3>Response Time</h3>
                                     <p>Within 24 hours</p>
-                                </div>
-                            </div>
-
-                            <!-- Status Display -->
-                            <div class="status-section">
-                                <h3>Current Status</h3>
-                                <div id="status-container">
-                                    <!-- Status will be populated by JavaScript -->
                                 </div>
                             </div>
 

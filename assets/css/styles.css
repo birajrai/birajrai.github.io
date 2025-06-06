@@ -9,7 +9,7 @@
 }
 
 :root {
-    /* Colors */
+    /* Colors - Now customizable */
     --primary-color: #6366f1;
     --primary-dark: #4f46e5;
     --primary-light: #8b5cf6;
@@ -75,6 +75,20 @@ body {
     background-color: var(--bg-primary);
     overflow-x: hidden;
     transition: background-color var(--transition-normal), color var(--transition-normal);
+}
+
+/* Performance optimizations for mobile */
+@media (max-width: 768px) {
+    * {
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+    }
+
+    body {
+        -webkit-overflow-scrolling: touch;
+    }
 }
 
 /* Container */
@@ -169,7 +183,8 @@ body {
     width: 100%;
 }
 
-.theme-toggle {
+.theme-toggle,
+.color-toggle {
     background: none;
     border: none;
     color: var(--text-secondary);
@@ -180,7 +195,8 @@ body {
     transition: all var(--transition-fast);
 }
 
-.theme-toggle:hover {
+.theme-toggle:hover,
+.color-toggle:hover {
     color: var(--primary-color);
     background: var(--bg-secondary);
 }
@@ -209,6 +225,310 @@ body {
 
 .nav-toggle.active span:nth-child(3) {
     transform: rotate(-45deg) translate(7px, -6px);
+}
+
+/* Color Customizer Panel */
+.color-panel {
+    position: fixed;
+    top: 0;
+    right: -400px;
+    width: 400px;
+    height: 100vh;
+    background: var(--bg-primary);
+    border-left: 1px solid var(--border-color);
+    z-index: 1001;
+    transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: -10px 0 30px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+}
+
+.color-panel.active {
+    right: 0;
+}
+
+.color-panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.color-panel-header h3 {
+    font-family: var(--font-minecraft);
+    color: var(--text-primary);
+    font-size: 1.2rem;
+}
+
+.color-panel-close {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: var(--radius-md);
+    transition: all var(--transition-fast);
+}
+
+.color-panel-close:hover {
+    color: var(--primary-color);
+    background: var(--bg-secondary);
+}
+
+.color-panel-content {
+    padding: 2rem;
+}
+
+.color-section {
+    margin-bottom: 2rem;
+}
+
+.color-section h4 {
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+    font-size: 1rem;
+}
+
+.theme-presets {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.theme-preset {
+    background: var(--bg-secondary);
+    border: 2px solid transparent;
+    border-radius: var(--radius-lg);
+    padding: 1rem;
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    text-align: center;
+}
+
+.theme-preset.active,
+.theme-preset:hover {
+    border-color: var(--primary-color);
+    background: var(--bg-primary);
+}
+
+.preset-colors {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.preset-colors span {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid var(--bg-primary);
+}
+
+.theme-preset span {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.color-inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.color-input-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.color-input-group label {
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.color-input-group input[type='color'] {
+    width: 50px;
+    height: 40px;
+    border: none;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    background: none;
+}
+
+/* Discord Status Tooltip */
+.status-tooltip {
+    position: absolute;
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 1rem;
+    box-shadow: var(--shadow-lg);
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all var(--transition-normal);
+    pointer-events: none;
+    min-width: 200px;
+}
+
+.status-tooltip.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.tooltip-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.tooltip-status {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.tooltip-indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #6b7280;
+}
+
+.tooltip-indicator.online {
+    background: #23a55a;
+    box-shadow: 0 0 10px rgba(35, 165, 90, 0.4);
+}
+
+.tooltip-indicator.idle {
+    background: #f0b232;
+    box-shadow: 0 0 10px rgba(240, 178, 50, 0.4);
+}
+
+.tooltip-indicator.dnd {
+    background: #f23f43;
+    box-shadow: 0 0 10px rgba(242, 63, 67, 0.4);
+}
+
+.tooltip-indicator.offline {
+    background: #80848e;
+}
+
+.tooltip-text {
+    font-weight: 600;
+    color: var(--text-primary);
+    text-transform: capitalize;
+}
+
+.tooltip-activity {
+    font-size: 0.875rem;
+    color: var(--primary-color);
+    font-weight: 500;
+}
+
+.tooltip-time {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+/* Sticky Spotify Player */
+.spotify-player {
+    position: fixed;
+    bottom: 2rem;
+    left: 2rem;
+    background: linear-gradient(135deg, #1db954, #1ed760);
+    border-radius: var(--radius-xl);
+    box-shadow: 0 8px 32px rgba(29, 185, 84, 0.3);
+    z-index: 999;
+    color: white;
+    overflow: hidden;
+    transition: all var(--transition-normal);
+    max-width: 350px;
+    min-width: 280px;
+}
+
+.spotify-player.minimized {
+    transform: translateY(calc(100% - 60px));
+}
+
+.spotify-player-content {
+    padding: 1rem;
+}
+
+.spotify-player-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.spotify-player-album {
+    width: 50px;
+    height: 50px;
+    border-radius: var(--radius-md);
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.spotify-player-details {
+    flex: 1;
+    min-width: 0;
+}
+
+.spotify-player-song {
+    font-weight: 700;
+    font-size: 0.95rem;
+    margin-bottom: 0.25rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.spotify-player-artist {
+    font-size: 0.85rem;
+    opacity: 0.9;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.spotify-player-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.spotify-toggle,
+.spotify-open {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    padding: 0.5rem;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.spotify-toggle:hover,
+.spotify-open:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-1px);
+}
+
+.spotify-toggle i {
+    transition: transform var(--transition-normal);
+}
+
+.spotify-player.minimized .spotify-toggle i {
+    transform: rotate(180deg);
 }
 
 /* Buttons */
@@ -341,6 +661,7 @@ body {
     background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
     opacity: 0.1;
     animation: float 6s ease-in-out infinite;
+    will-change: transform;
 }
 
 .shape-1 {
@@ -374,6 +695,23 @@ body {
     }
     50% {
         transform: translateY(-20px);
+    }
+}
+
+/* Optimized animations for mobile */
+@media (max-width: 768px) {
+    .shape {
+        animation: floatMobile 8s ease-in-out infinite;
+    }
+
+    @keyframes floatMobile {
+        0%,
+        100% {
+            transform: translateY(0px);
+        }
+        50% {
+            transform: translateY(-10px);
+        }
     }
 }
 
@@ -603,6 +941,87 @@ body {
     gap: 1rem;
     color: white;
     font-size: 1.5rem;
+}
+
+/* Discord Status Indicator */
+.discord-status {
+    position: absolute;
+    bottom: 8%;
+    right: 8%;
+    width: 70px;
+    height: 70px;
+    background: var(--bg-primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 0 6px var(--bg-primary), 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 3;
+    transition: all var(--transition-normal);
+    cursor: pointer;
+}
+
+.discord-status:hover {
+    transform: scale(1.1);
+}
+
+.status-dot {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #6b7280;
+    transition: all var(--transition-normal);
+    position: relative;
+}
+
+.status-dot::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity var(--transition-normal);
+}
+
+.status-dot.online {
+    background: #23a55a;
+    box-shadow: 0 0 20px rgba(35, 165, 90, 0.4);
+}
+
+.status-dot.online::after {
+    background: #23a55a;
+    opacity: 0.3;
+    animation: statusPulse 2s ease-in-out infinite;
+}
+
+.status-dot.idle {
+    background: #f0b232;
+    box-shadow: 0 0 20px rgba(240, 178, 50, 0.4);
+}
+
+.status-dot.dnd {
+    background: #f23f43;
+    box-shadow: 0 0 20px rgba(242, 63, 67, 0.4);
+}
+
+.status-dot.offline {
+    background: #80848e;
+}
+
+@keyframes statusPulse {
+    0%,
+    100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0.3;
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1.2);
+        opacity: 0.1;
+    }
 }
 
 .scroll-indicator {
@@ -1363,35 +1782,44 @@ body {
     .projects-grid {
         grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     }
+
+    .color-panel {
+        width: 100%;
+        right: -100%;
+    }
+
+    .spotify-player {
+        left: 1rem;
+        right: 1rem;
+        max-width: none;
+        min-width: auto;
+    }
 }
 
 @media (max-width: 768px) {
-    :root {
-        --container-padding: 1rem;
-        --section-padding: 3rem 0;
-    }
-
     .nav-menu {
         position: fixed;
-        top: 5rem;
-        left: 0;
-        width: 100%;
-        height: calc(100vh - 5rem);
-        background: rgba(255, 255, 255, 0.98);
-        backdrop-filter: blur(20px);
-        border-top: 1px solid var(--border-color);
+        top: 0;
+        right: 0;
+        width: 250px;
+        height: 100vh;
+        background: var(--bg-primary);
+        border-left: 1px solid var(--border-color);
         flex-direction: column;
-        padding: 2rem;
-        gap: 2rem;
-        transform: translateX(-100%);
+        padding: 6rem 1.5rem 2rem;
+        gap: 1rem;
+        transform: translateX(100%);
         opacity: 0;
         visibility: hidden;
-        transition: all 0.3s ease;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         z-index: 999;
+        box-shadow: -10px 0 30px rgba(0, 0, 0, 0.1);
     }
 
     [data-theme='dark'] .nav-menu {
-        background: rgba(17, 24, 39, 0.98);
+        background: var(--bg-primary);
+        border-left: 1px solid var(--border-color);
+        box-shadow: -10px 0 30px rgba(0, 0, 0, 0.3);
     }
 
     .nav-menu.active {
@@ -1401,28 +1829,118 @@ body {
     }
 
     .nav-link {
-        font-size: 1.2rem;
-        padding: 1rem 0;
-        border-bottom: 1px solid var(--border-color);
+        font-size: 1rem;
+        padding: 0.75rem 0;
+        border-bottom: 1px solid transparent;
         width: 100%;
-        text-align: center;
+        text-align: left;
+        transition: all var(--transition-fast);
+        border-radius: var(--radius-md);
     }
 
-    .theme-toggle {
-        margin-top: 2rem;
-        align-self: center;
+    .nav-link:hover {
+        background: var(--bg-secondary);
+        padding-left: 1rem;
+        color: var(--primary-color);
+    }
+
+    .theme-toggle,
+    .color-toggle {
+        margin-top: 1rem;
+        align-self: flex-start;
+        padding: 0.75rem;
+        border-radius: var(--radius-lg);
+        background: var(--bg-secondary);
+        width: 100%;
+        justify-content: center;
     }
 
     .nav-toggle {
         display: flex;
-    }
-    /* new */
-    .loader-text {
-        font-size: 1.5rem;
+        z-index: 1001;
     }
 
-    .loader-progress-container {
-        width: 250px;
+    /* Mobile backdrop */
+    body.nav-open::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.3);
+        z-index: 998;
+        backdrop-filter: blur(2px);
+    }
+
+    /* Discord status mobile adjustments */
+    .discord-status {
+        width: 40px;
+        height: 40px;
+        bottom: 5%;
+        right: 5%;
+    }
+
+    .status-dot {
+        width: 14px;
+        height: 14px;
+    }
+
+    /* Spotify player mobile */
+    .spotify-player {
+        bottom: 1rem;
+        left: 1rem;
+        right: 1rem;
+        max-width: none;
+        min-width: auto;
+    }
+
+    .spotify-player-content {
+        padding: 0.875rem;
+    }
+
+    .spotify-player-info {
+        margin-bottom: 0.75rem;
+    }
+
+    .spotify-player-album {
+        width: 40px;
+        height: 40px;
+    }
+
+    .spotify-player-song {
+        font-size: 0.85rem;
+    }
+
+    .spotify-player-artist {
+        font-size: 0.75rem;
+    }
+
+    /* Optimized mobile animations */
+    .hero-text,
+    .hero-image {
+        animation: none;
+    }
+
+    .hero-text {
+        opacity: 1;
+        transform: none;
+    }
+
+    .hero-image {
+        opacity: 1;
+        transform: none;
+    }
+
+    /* Reduce motion for better performance */
+    @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+        }
     }
 
     .hero-greeting {
@@ -1437,7 +1955,7 @@ body {
     }
 
     .hero {
-        padding: 10rem 0.5rem 1.5rem 0.5rem; /* Add more bottom padding */
+        padding: 10rem 0.5rem 1.5rem 0.5rem;
         min-height: unset;
     }
 
@@ -1500,7 +2018,7 @@ body {
     .hero-image {
         order: -1;
         margin-bottom: 1.2rem;
-        margin-top: 2.5rem; /* Push image lower to avoid nav overlap */
+        margin-top: 2.5rem;
         display: flex;
         justify-content: center;
     }
@@ -1628,123 +2146,6 @@ body {
     display: block;
 }
 
-/* Status Display Styles */
-.status-section {
-    margin-top: 2rem;
-}
-
-.status-section h3 {
-    font-weight: 600;
-    color: var(--text-primary);
-    margin-bottom: 1rem;
-    font-family: var(--font-minecraft);
-}
-
-.status-card {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 1rem;
-    background: var(--bg-primary);
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-sm);
-    margin-bottom: 0.5rem;
-    border-left: 4px solid var(--primary-color);
-}
-
-.status-indicator {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    flex-shrink: 0;
-}
-
-.status-indicator.online {
-    background-color: #10b981;
-    box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
-}
-
-.status-indicator.idle {
-    background-color: #f59e0b;
-    box-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
-}
-
-.status-indicator.dnd {
-    background-color: #ef4444;
-    box-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
-}
-
-.status-indicator.offline {
-    background-color: #6b7280;
-}
-
-.status-info {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-}
-
-.status-text {
-    font-weight: 600;
-    color: var(--text-primary);
-    text-transform: capitalize;
-}
-
-.status-subtext {
-    font-size: 0.875rem;
-    color: var(--text-secondary);
-}
-
-.status-activity {
-    font-size: 0.875rem;
-    color: var(--primary-color);
-    font-weight: 500;
-}
-
-.spotify-card {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1rem;
-    background: linear-gradient(135deg, #1db954, #1ed760);
-    border-radius: var(--radius-lg);
-    color: white;
-    margin-top: 0.5rem;
-}
-
-.spotify-info {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-}
-
-.spotify-album {
-    width: 40px;
-    height: 40px;
-    border-radius: var(--radius-md);
-    object-fit: cover;
-}
-
-.spotify-details {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-}
-
-.spotify-song {
-    font-weight: 600;
-    font-size: 0.9rem;
-}
-
-.spotify-artist {
-    font-size: 0.8rem;
-    opacity: 0.9;
-}
-
-.spotify-icon {
-    font-size: 1.5rem;
-}
-
 /* Contact Buttons */
 .contact-buttons {
     display: flex;
@@ -1759,217 +2160,6 @@ body {
     padding: 1rem 2rem;
     gap: 0.75rem;
     justify-content: center;
-}
-
-/* Improved Mobile Navigation */
-body.nav-open {
-    overflow: hidden;
-}
-
-body.nav-open::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 998;
-    backdrop-filter: blur(5px);
-}
-
-/* Mobile Responsive Improvements */
-@media (max-width: 768px) {
-    .nav-menu {
-        position: fixed;
-        top: 0;
-        right: 0;
-        width: 280px;
-        height: 100vh;
-        background: var(--bg-primary);
-        border-left: 1px solid var(--border-color);
-        flex-direction: column;
-        padding: 6rem 2rem 2rem;
-        gap: 1.5rem;
-        transform: translateX(100%);
-        opacity: 0;
-        visibility: hidden;
-        transition: all 0.3s ease;
-        z-index: 999;
-        box-shadow: var(--shadow-xl);
-    }
-
-    [data-theme='dark'] .nav-menu {
-        background: var(--bg-primary);
-        border-left: 1px solid var(--border-color);
-    }
-
-    .nav-menu.active {
-        transform: translateX(0);
-        opacity: 1;
-        visibility: visible;
-    }
-
-    .nav-link {
-        font-size: 1.1rem;
-        padding: 1rem 0;
-        border-bottom: 1px solid var(--border-color);
-        width: 100%;
-        text-align: left;
-        transition: all var(--transition-fast);
-    }
-
-    .nav-link:hover {
-        padding-left: 1rem;
-        color: var(--primary-color);
-    }
-
-    .theme-toggle {
-        margin-top: 1rem;
-        align-self: flex-start;
-        padding: 1rem;
-        border-radius: var(--radius-lg);
-        background: var(--bg-secondary);
-    }
-
-    .nav-toggle {
-        display: flex;
-        z-index: 1001;
-    }
-
-    /* Contact Section Mobile */
-    .contact-content {
-        grid-template-columns: 1fr;
-        gap: 2rem;
-    }
-
-    .contact-buttons {
-        flex-direction: column;
-        gap: 0.75rem;
-    }
-
-    .email-btn,
-    .resume-btn {
-        font-size: 1rem;
-        padding: 0.875rem 1.5rem;
-    }
-
-    /* Status Display Mobile */
-    .status-card {
-        padding: 0.875rem;
-        gap: 0.75rem;
-    }
-
-    .spotify-card {
-        padding: 0.875rem;
-        flex-direction: column;
-        gap: 0.75rem;
-        text-align: center;
-    }
-
-    .spotify-info {
-        flex-direction: column;
-        gap: 0.75rem;
-        text-align: center;
-    }
-
-    .spotify-album {
-        width: 60px;
-        height: 60px;
-    }
-
-    /* Hero Section Mobile Improvements */
-    .hero-content {
-        gap: 2rem;
-    }
-
-    .hero-buttons {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 0.75rem;
-        margin-bottom: 1.5rem;
-    }
-
-    .btn {
-        justify-content: center;
-        padding: 1rem 1.5rem;
-    }
-
-    /* Skills Grid Mobile */
-    .skills-grid {
-        grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
-        gap: 1rem;
-    }
-
-    .skill-item {
-        padding: 1rem;
-    }
-
-    .skill-icon {
-        font-size: 2rem;
-        margin-bottom: 0.75rem;
-    }
-
-    .skill-name {
-        font-size: 0.875rem;
-    }
-
-    /* Timeline Mobile */
-    .timeline::before {
-        left: 1rem;
-    }
-
-    .timeline-item {
-        padding-left: 3rem;
-    }
-
-    .timeline-marker {
-        left: 0.5rem;
-        width: 1.5rem;
-        height: 1.5rem;
-        font-size: 0.75rem;
-    }
-
-    .timeline-content {
-        padding: 1.5rem;
-    }
-
-    .timeline-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.5rem;
-    }
-
-    .timeline-header h3 {
-        font-size: 1.1rem;
-    }
-
-    .timeline-date {
-        font-size: 0.8rem;
-    }
-
-    /* Projects Grid Mobile */
-    .projects-grid {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-    }
-
-    .project-card {
-        margin: 0 auto;
-        max-width: 400px;
-    }
-
-    /* Footer Mobile */
-    .footer-content {
-        flex-direction: column;
-        gap: 1rem;
-        text-align: center;
-    }
-
-    .footer-links {
-        gap: 1.5rem;
-        justify-content: center;
-    }
 }
 
 /* Extra Small Mobile Devices */
@@ -2003,6 +2193,17 @@ body.nav-open::before {
     .resume-btn {
         font-size: 0.9rem;
         padding: 0.75rem 1.25rem;
+    }
+
+    .color-panel {
+        width: 100%;
+        right: -100%;
+    }
+
+    .spotify-player {
+        bottom: 0.5rem;
+        left: 0.5rem;
+        right: 0.5rem;
     }
 }
 

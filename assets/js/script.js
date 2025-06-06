@@ -7,11 +7,41 @@ const typingText = document.getElementById('typing-text');
 const skillsGrid = document.getElementById('skills-grid');
 const projectsGrid = document.getElementById('projects-grid');
 const themeToggle = document.getElementById('theme-toggle');
-const statusContainer = document.getElementById('status-container');
+const colorToggle = document.getElementById('color-toggle');
+const colorPanel = document.getElementById('color-panel');
+const colorPanelClose = document.getElementById('color-panel-close');
+const statusTooltip = document.getElementById('status-tooltip');
+const spotifyPlayer = document.getElementById('spotify-player');
+const spotifyToggle = document.getElementById('spotify-toggle');
 
 // Global Variables
 let currentSkillCategory = 'frontend';
 let currentProjectFilter = 'all';
+let currentDiscordData = null;
+
+// Color Themes
+const colorThemes = {
+    default: {
+        primary: '#6366f1',
+        secondary: '#10b981',
+        accent: '#f59e0b',
+    },
+    ocean: {
+        primary: '#0ea5e9',
+        secondary: '#06b6d4',
+        accent: '#8b5cf6',
+    },
+    sunset: {
+        primary: '#f97316',
+        secondary: '#ef4444',
+        accent: '#eab308',
+    },
+    forest: {
+        primary: '#059669',
+        secondary: '#65a30d',
+        accent: '#ca8a04',
+    },
+};
 
 // Experience Data
 const experienceData = [
@@ -211,83 +241,320 @@ function animateCounters() {
     });
 }
 
-// Status Fetcher
-async function fetchDiscordStatus() {
-    try {
-        const response = await fetch('https://discordstatus.dapirates.xyz/user/835126233455919164/');
-        const data = await response.json();
+// Color Customization Functions
+function initColorCustomization() {
+    if (!colorToggle || !colorPanel) return;
 
-        if (statusContainer) {
-            renderStatus(data);
+    // Load saved colors
+    loadSavedColors();
+
+    // Color toggle button
+    colorToggle.addEventListener('click', () => {
+        colorPanel.classList.toggle('active');
+    });
+
+    // Close color panel
+    colorPanelClose.addEventListener('click', () => {
+        colorPanel.classList.remove('active');
+    });
+
+    // Theme presets
+    document.querySelectorAll('.theme-preset').forEach(preset => {
+        preset.addEventListener('click', () => {
+            const theme = preset.getAttribute('data-theme');
+            applyColorTheme(theme);
+
+            // Update active preset
+            document.querySelectorAll('.theme-preset').forEach(p => p.classList.remove('active'));
+            preset.classList.add('active');
+        });
+    });
+
+    // Custom color inputs
+    document.getElementById('primary-color').addEventListener('input', e => {
+        updateCustomColor('primary', e.target.value);
+    });
+
+    document.getElementById('secondary-color').addEventListener('input', e => {
+        updateCustomColor('secondary', e.target.value);
+    });
+
+    document.getElementById('accent-color').addEventListener('input', e => {
+        updateCustomColor('accent', e.target.value);
+    });
+
+    // Reset colors
+    document.getElementById('reset-colors').addEventListener('click', () => {
+        applyColorTheme('default');
+        document.querySelectorAll('.theme-preset').forEach(p => p.classList.remove('active'));
+        document.querySelector('[data-theme="default"]').classList.add('active');
+    });
+
+    // Close panel when clicking outside
+    document.addEventListener('click', e => {
+        if (!colorPanel.contains(e.target) && !colorToggle.contains(e.target)) {
+            colorPanel.classList.remove('active');
         }
-    } catch (error) {
-        console.log('Status API not available:', error);
-        if (statusContainer) {
-            statusContainer.innerHTML = `
-        <div class="status-card offline">
-          <div class="status-indicator offline"></div>
-          <div class="status-info">
-            <span class="status-text">Currently Offline</span>
-            <span class="status-subtext">Status unavailable</span>
-          </div>
-        </div>
-      `;
-        }
+    });
+}
+
+function applyColorTheme(themeName) {
+    const theme = colorThemes[themeName];
+    if (!theme) return;
+
+    const root = document.documentElement;
+    root.style.setProperty('--primary-color', theme.primary);
+    root.style.setProperty('--secondary-color', theme.secondary);
+    root.style.setProperty('--accent-color', theme.accent);
+
+    // Update darker/lighter variants
+    root.style.setProperty('--primary-dark', adjustBrightness(theme.primary, -20));
+    root.style.setProperty('--primary-light', adjustBrightness(theme.primary, 20));
+
+    // Update color inputs
+    document.getElementById('primary-color').value = theme.primary;
+    document.getElementById('secondary-color').value = theme.secondary;
+    document.getElementById('accent-color').value = theme.accent;
+
+    // Save to localStorage
+    localStorage.setItem('colorTheme', JSON.stringify(theme));
+}
+
+function updateCustomColor(type, color) {
+    const root = document.documentElement;
+    root.style.setProperty(`--${type}-color`, color);
+
+    if (type === 'primary') {
+        root.style.setProperty('--primary-dark', adjustBrightness(color, -20));
+        root.style.setProperty('--primary-light', adjustBrightness(color, 20));
+    }
+
+    // Save custom colors
+    const customTheme = {
+        primary: document.getElementById('primary-color').value,
+        secondary: document.getElementById('secondary-color').value,
+        accent: document.getElementById('accent-color').value,
+    };
+    localStorage.setItem('colorTheme', JSON.stringify(customTheme));
+
+    // Remove active state from presets
+    document.querySelectorAll('.theme-preset').forEach(p => p.classList.remove('active'));
+}
+
+function adjustBrightness(hex, percent) {
+    const num = Number.parseInt(hex.replace('#', ''), 16);
+    const amt = Math.round(2.55 * percent);
+    const R = (num >> 16) + amt;
+    const G = ((num >> 8) & 0x00ff) + amt;
+    const B = (num & 0x0000ff) + amt;
+    return (
+        '#' +
+        (
+            0x1000000 +
+            (R < 255 ? (R < 1 ? 0 : R) : 255) * 0x10000 +
+            (G < 255 ? (G < 1 ? 0 : G) : 255) * 0x100 +
+            (B < 255 ? (B < 1 ? 0 : B) : 255)
+        )
+            .toString(16)
+            .slice(1)
+    );
+}
+
+function loadSavedColors() {
+    const savedTheme = localStorage.getItem('colorTheme');
+    if (savedTheme) {
+        const theme = JSON.parse(savedTheme);
+        const root = document.documentElement;
+        root.style.setProperty('--primary-color', theme.primary);
+        root.style.setProperty('--secondary-color', theme.secondary);
+        root.style.setProperty('--accent-color', theme.accent);
+        root.style.setProperty('--primary-dark', adjustBrightness(theme.primary, -20));
+        root.style.setProperty('--primary-light', adjustBrightness(theme.primary, 20));
+
+        // Update color inputs
+        document.getElementById('primary-color').value = theme.primary;
+        document.getElementById('secondary-color').value = theme.secondary;
+        document.getElementById('accent-color').value = theme.accent;
     }
 }
 
-function renderStatus(data) {
-    if (!statusContainer) return;
+// Enhanced Discord Status with Tooltips
+async function fetchDiscordStatus() {
+    try {
+        const response = await fetch('https://discordstatus.dapirates.xyz/user/835126233455919164/');
 
-    const statusColors = {
-        online: '#10b981',
-        idle: '#f59e0b',
-        dnd: '#ef4444',
-        offline: '#6b7280',
-    };
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
 
-    let statusHTML = `
-    <div class="status-card ${data.status}">
-      <div class="status-indicator ${data.status}" style="background-color: ${statusColors[data.status]}"></div>
-      <div class="status-info">
-        <span class="status-text">${data.status.charAt(0).toUpperCase() + data.status.slice(1)}</span>
-  `;
+        const data = await response.json();
+        currentDiscordData = data;
+
+        // Update Discord status in hero with animation
+        updateHeroStatus(data);
+
+        // Update Spotify player
+        updateSpotifyPlayer(data);
+
+        console.log('✅ Discord status updated successfully');
+    } catch (error) {
+        console.log('⚠️ Status API not available:', error.message);
+        setOfflineStatus();
+    }
+}
+
+function updateHeroStatus(data) {
+    const discordStatus = document.getElementById('discord-status');
+    if (!discordStatus) return;
+
+    const statusDot = discordStatus.querySelector('.status-dot');
+    if (statusDot) {
+        statusDot.style.opacity = '0';
+        setTimeout(() => {
+            statusDot.className = `status-dot ${data.status}`;
+            statusDot.style.opacity = '1';
+        }, 150);
+    }
+}
+
+function updateSpotifyPlayer(data) {
+    if (!spotifyPlayer) return;
+
+    if (data.spotify) {
+        const album = spotifyPlayer.querySelector('.spotify-player-album');
+        const song = spotifyPlayer.querySelector('.spotify-player-song');
+        const artist = spotifyPlayer.querySelector('.spotify-player-artist');
+
+        if (album && song && artist) {
+            album.src = data.spotify.album_art_url;
+            album.onerror = () => {
+                album.src = 'https://placehold.co/50x50/1db954/ffffff?text=♪';
+            };
+            song.textContent = data.spotify.song;
+            artist.textContent = `by ${data.spotify.artist}`;
+
+            spotifyPlayer.style.display = 'block';
+            setTimeout(() => {
+                spotifyPlayer.style.opacity = '1';
+                spotifyPlayer.style.transform = 'translateY(0)';
+            }, 100);
+        }
+    } else {
+        spotifyPlayer.style.opacity = '0';
+        spotifyPlayer.style.transform = 'translateY(20px)';
+        setTimeout(() => {
+            spotifyPlayer.style.display = 'none';
+        }, 300);
+    }
+}
+
+function setOfflineStatus() {
+    const discordStatus = document.getElementById('discord-status');
+    if (discordStatus) {
+        const statusDot = discordStatus.querySelector('.status-dot');
+        if (statusDot) {
+            statusDot.className = 'status-dot offline';
+        }
+    }
+
+    if (spotifyPlayer) {
+        spotifyPlayer.style.display = 'none';
+    }
+}
+
+// Discord Status Tooltip
+function initStatusTooltip() {
+    const discordStatus = document.getElementById('discord-status');
+    if (!discordStatus || !statusTooltip) return;
+
+    let tooltipTimeout;
+
+    discordStatus.addEventListener('mouseenter', () => {
+        if (currentDiscordData) {
+            showStatusTooltip(currentDiscordData);
+        }
+    });
+
+    discordStatus.addEventListener('mouseleave', () => {
+        hideStatusTooltip();
+    });
+
+    discordStatus.addEventListener('mousemove', e => {
+        if (statusTooltip.classList.contains('visible')) {
+            positionTooltip(e);
+        }
+    });
+}
+
+function showStatusTooltip(data) {
+    if (!statusTooltip) return;
+
+    const tooltipIndicator = statusTooltip.querySelector('.tooltip-indicator');
+    const tooltipText = statusTooltip.querySelector('.tooltip-text');
+    const tooltipActivity = statusTooltip.querySelector('.tooltip-activity');
+    const tooltipTime = statusTooltip.querySelector('.tooltip-time');
+
+    // Update tooltip content
+    tooltipIndicator.className = `tooltip-indicator ${data.status}`;
+    tooltipText.textContent = data.status.charAt(0).toUpperCase() + data.status.slice(1);
 
     // Add custom status if available
     if (data.custom_status) {
-        statusHTML += `<span class="status-subtext">${data.custom_status}</span>`;
-    }
-
-    // Add activity if available
-    if (data.activities && data.activities.length > 0) {
+        tooltipActivity.textContent = data.custom_status;
+        tooltipActivity.style.display = 'block';
+    } else if (data.activities && data.activities.length > 0) {
         const activity = data.activities[0];
-        statusHTML += `<span class="status-activity">${activity.type} ${activity.name}</span>`;
+        tooltipActivity.textContent = `${activity.type} ${activity.name}`;
+        tooltipActivity.style.display = 'block';
+    } else {
+        tooltipActivity.style.display = 'none';
     }
 
-    statusHTML += `
-      </div>
-    </div>
-  `;
+    // Add timestamp
+    tooltipTime.textContent = `Last updated: ${new Date().toLocaleTimeString()}`;
 
-    // Add Spotify if available
-    if (data.spotify) {
-        statusHTML += `
-      <div class="spotify-card">
-        <div class="spotify-info">
-          <img src="${data.spotify.album_art_url}" alt="Album Art" class="spotify-album">
-          <div class="spotify-details">
-            <span class="spotify-song">${data.spotify.song}</span>
-            <span class="spotify-artist">by ${data.spotify.artist}</span>
-          </div>
-        </div>
-        <div class="spotify-icon">
-          <i class="fab fa-spotify"></i>
-        </div>
-      </div>
-    `;
+    statusTooltip.classList.add('visible');
+}
+
+function hideStatusTooltip() {
+    if (statusTooltip) {
+        statusTooltip.classList.remove('visible');
     }
+}
 
-    statusContainer.innerHTML = statusHTML;
+function positionTooltip(e) {
+    if (!statusTooltip) return;
+
+    const rect = statusTooltip.getBoundingClientRect();
+    const x = e.clientX + 10;
+    const y = e.clientY - rect.height - 10;
+
+    statusTooltip.style.left = `${Math.min(x, window.innerWidth - rect.width - 10)}px`;
+    statusTooltip.style.top = `${Math.max(y, 10)}px`;
+}
+
+// Spotify Player Controls
+function initSpotifyPlayer() {
+    if (!spotifyToggle) return;
+
+    spotifyToggle.addEventListener('click', () => {
+        spotifyPlayer.classList.toggle('minimized');
+    });
+
+    // Auto-hide after inactivity
+    let inactivityTimer;
+    const resetInactivityTimer = () => {
+        clearTimeout(inactivityTimer);
+        inactivityTimer = setTimeout(() => {
+            if (!spotifyPlayer.classList.contains('minimized')) {
+                spotifyPlayer.classList.add('minimized');
+            }
+        }, 10000); // Hide after 10 seconds of inactivity
+    };
+
+    document.addEventListener('mousemove', resetInactivityTimer);
+    document.addEventListener('keypress', resetInactivityTimer);
+    resetInactivityTimer();
 }
 
 // Scroll to section function
@@ -328,57 +595,99 @@ function updateThemeIcon(theme) {
     }
 }
 
-// Navigation
+// Enhanced Navigation with improved mobile UX
 function initNavigation() {
     if (!navToggle || !navMenu) return;
 
-    // Mobile menu toggle
-    navToggle.addEventListener('click', () => {
-        navToggle.classList.toggle('active');
-        navMenu.classList.toggle('active');
-        document.body.classList.toggle('nav-open');
+    // Mobile menu toggle with enhanced animations
+    navToggle.addEventListener('click', e => {
+        e.stopPropagation();
+        const isActive = navToggle.classList.contains('active');
+
+        if (!isActive) {
+            // Opening menu
+            navToggle.classList.add('active');
+            navMenu.classList.add('active');
+            document.body.classList.add('nav-open');
+
+            // Animate menu items with optimized performance
+            const navLinks = navMenu.querySelectorAll('.nav-link');
+            navLinks.forEach((link, index) => {
+                link.style.opacity = '0';
+                link.style.transform = 'translateX(20px)';
+                setTimeout(() => {
+                    link.style.transition = 'all 0.3s ease';
+                    link.style.opacity = '1';
+                    link.style.transform = 'translateX(0)';
+                }, index * 50 + 100);
+            });
+        } else {
+            // Closing menu
+            closeNavMenu();
+        }
     });
 
     // Close mobile menu when clicking on links
     document.querySelectorAll('.nav-link').forEach(link => {
         link.addEventListener('click', () => {
-            navToggle.classList.remove('active');
-            navMenu.classList.remove('active');
-            document.body.classList.remove('nav-open');
+            closeNavMenu();
         });
     });
 
-    // Close mobile menu when clicking outside
+    // Close mobile menu when clicking on backdrop
     document.addEventListener('click', e => {
-        if (!navbar.contains(e.target) && navMenu.classList.contains('active')) {
-            navToggle.classList.remove('active');
-            navMenu.classList.remove('active');
-            document.body.classList.remove('nav-open');
+        if (navMenu.classList.contains('active') && !navbar.contains(e.target)) {
+            closeNavMenu();
         }
     });
 
-    // Navbar scroll effect
-    window.addEventListener('scroll', () => {
-        if (navbar && window.scrollY > 100) {
-            navbar.classList.add('scrolled');
-        } else if (navbar) {
-            navbar.classList.remove('scrolled');
+    // Enhanced scroll effects with performance optimization
+    let lastScrollY = window.scrollY;
+    let ticking = false;
+
+    const updateNavbar = () => {
+        const currentScrollY = window.scrollY;
+
+        if (navbar) {
+            if (currentScrollY > 100) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+
+            // Hide navbar on scroll down, show on scroll up (mobile optimization)
+            if (window.innerWidth <= 768) {
+                if (currentScrollY > lastScrollY && currentScrollY > 200) {
+                    navbar.style.transform = 'translateY(-100%)';
+                } else {
+                    navbar.style.transform = 'translateY(0)';
+                }
+            }
         }
 
-        // Update active nav link
+        lastScrollY = currentScrollY;
         updateActiveNavLink();
 
         // Show/hide scroll to top button
         if (scrollTopBtn) {
-            if (window.scrollY > 500) {
+            if (currentScrollY > 500) {
                 scrollTopBtn.classList.add('visible');
             } else {
                 scrollTopBtn.classList.remove('visible');
             }
         }
+
+        ticking = false;
+    };
+
+    window.addEventListener('scroll', () => {
+        if (!ticking) {
+            requestAnimationFrame(updateNavbar);
+            ticking = true;
+        }
     });
 
-    // Scroll to top
+    // Scroll to top with smooth animation
     if (scrollTopBtn) {
         scrollTopBtn.addEventListener('click', () => {
             window.scrollTo({
@@ -387,6 +696,12 @@ function initNavigation() {
             });
         });
     }
+}
+
+function closeNavMenu() {
+    navToggle.classList.remove('active');
+    navMenu.classList.remove('active');
+    document.body.classList.remove('nav-open');
 }
 
 // Update active navigation link
@@ -453,14 +768,14 @@ function renderSkills() {
         )
         .join('');
 
-    // Trigger animation
+    // Trigger animation with performance optimization
     setTimeout(() => {
         skillsGrid.querySelectorAll('.skill-item').forEach((item, index) => {
             setTimeout(() => {
                 item.classList.add('visible');
-            }, index * 100);
+            }, index * 50); // Reduced delay for better performance
         });
-    }, 100);
+    }, 50);
 }
 
 // Experience Toggle
@@ -606,32 +921,54 @@ function renderProjects() {
         )
         .join('');
 
-    // Animate project cards
+    // Animate project cards with performance optimization
     setTimeout(() => {
         projectsGrid.querySelectorAll('.project-card').forEach((card, index) => {
             setTimeout(() => {
                 card.style.opacity = '1';
                 card.style.transform = 'translateY(0)';
-            }, index * 150);
+            }, index * 100);
         });
-    }, 100);
+    }, 50);
 }
 
-// Download Resume
+// Enhanced Resume Download with user feedback
 function downloadResume() {
+    // Show loading state
+    const button = event.target.closest('.btn');
+    const originalText = button.innerHTML;
+
+    button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>Downloading...</span>';
+    button.disabled = true;
+
     // Create a temporary link element
     const link = document.createElement('a');
-    link.href = '/assets/resume/Biraj Rai.pdf'; // Update this path to your actual resume file
-    link.download = 'Biraj Rai.pdf';
+    link.href = '/assets/resume/Biraj Rai.pdf';
+    link.download = 'Biraj_Rai_Resume.pdf';
     link.target = '_blank';
 
     // Trigger download
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+
+    // Reset button after delay
+    setTimeout(() => {
+        button.innerHTML = originalText;
+        button.disabled = false;
+
+        // Show success feedback
+        button.innerHTML = '<i class="fas fa-check"></i> <span>Downloaded!</span>';
+        setTimeout(() => {
+            button.innerHTML = originalText;
+        }, 2000);
+    }, 1000);
+
+    // Track download event
+    console.log('📄 Resume downloaded by user');
 }
 
-// Scroll Animations
+// Optimized Scroll Animations
 function initScrollAnimations() {
     const observerOptions = {
         threshold: 0.1,
@@ -642,6 +979,8 @@ function initScrollAnimations() {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('visible');
+                // Unobserve after animation to improve performance
+                observer.unobserve(entry.target);
             }
         });
     }, observerOptions);
@@ -669,26 +1008,54 @@ function initSmoothScrolling() {
     });
 }
 
-// Parallax Effect
+// Optimized Parallax Effect
 function initParallax() {
-    window.addEventListener('scroll', () => {
+    let ticking = false;
+
+    const updateParallax = () => {
         const scrolled = window.pageYOffset;
         const parallaxElements = document.querySelectorAll('.hero-shapes .shape');
 
         parallaxElements.forEach((element, index) => {
-            const speed = 0.5 + index * 0.1;
-            element.style.transform = `translateY(${scrolled * speed}px)`;
+            const speed = 0.3 + index * 0.1; // Reduced speed for better performance
+            element.style.transform = `translate3d(0, ${scrolled * speed}px, 0)`;
         });
+
+        ticking = false;
+    };
+
+    window.addEventListener('scroll', () => {
+        if (!ticking && window.innerWidth > 768) {
+            // Only on desktop for performance
+            requestAnimationFrame(updateParallax);
+            ticking = true;
+        }
     });
+}
+
+// Performance optimization: Reduce motion for users who prefer it
+function initReducedMotion() {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    if (prefersReducedMotion.matches) {
+        // Disable animations for users who prefer reduced motion
+        document.documentElement.style.setProperty('--transition-fast', '0s');
+        document.documentElement.style.setProperty('--transition-normal', '0s');
+        document.documentElement.style.setProperty('--transition-slow', '0s');
+    }
 }
 
 // Initialize everything when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
+    initReducedMotion();
     typeWriter();
     animateCounters();
     initScrollAnimations();
     initNavigation();
     initThemeToggle();
+    initColorCustomization();
+    initStatusTooltip();
+    initSpotifyPlayer();
     initSkills();
     initExperienceToggle();
     initProjects();
@@ -746,10 +1113,13 @@ document.addEventListener('keydown', e => {
     }
 
     // Close mobile menu with Escape key
-    if (e.key === 'Escape' && navMenu.classList.contains('active')) {
-        navToggle.classList.remove('active');
-        navMenu.classList.remove('active');
-        document.body.classList.remove('nav-open');
+    if (e.key === 'Escape') {
+        if (navMenu.classList.contains('active')) {
+            closeNavMenu();
+        }
+        if (colorPanel.classList.contains('active')) {
+            colorPanel.classList.remove('active');
+        }
     }
 });
 
