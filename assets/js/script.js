@@ -11,8 +11,6 @@ const colorToggle = document.getElementById('color-toggle');
 const colorPanel = document.getElementById('color-panel');
 const colorPanelClose = document.getElementById('color-panel-close');
 const statusTooltip = document.getElementById('status-tooltip');
-const spotifyPlayer = document.getElementById('spotify-player');
-const spotifyToggle = document.getElementById('spotify-toggle');
 
 // Global Variables
 let currentSkillCategory = 'frontend';
@@ -393,9 +391,6 @@ async function fetchDiscordStatus() {
         // Update Discord status in hero with animation
         updateHeroStatus(data);
 
-        // Update Spotify player
-        updateSpotifyPlayer(data);
-
         console.log('✅ Discord status updated successfully');
     } catch (error) {
         console.log('⚠️ Status API not available:', error.message);
@@ -417,37 +412,6 @@ function updateHeroStatus(data) {
     }
 }
 
-function updateSpotifyPlayer(data) {
-    if (!spotifyPlayer) return;
-
-    if (data.spotify) {
-        const album = spotifyPlayer.querySelector('.spotify-player-album');
-        const song = spotifyPlayer.querySelector('.spotify-player-song');
-        const artist = spotifyPlayer.querySelector('.spotify-player-artist');
-
-        if (album && song && artist) {
-            album.src = data.spotify.album_art_url;
-            album.onerror = () => {
-                album.src = 'https://placehold.co/50x50/1db954/ffffff?text=♪';
-            };
-            song.textContent = data.spotify.song;
-            artist.textContent = `by ${data.spotify.artist}`;
-
-            spotifyPlayer.style.display = 'block';
-            setTimeout(() => {
-                spotifyPlayer.style.opacity = '1';
-                spotifyPlayer.style.transform = 'translateY(0)';
-            }, 100);
-        }
-    } else {
-        spotifyPlayer.style.opacity = '0';
-        spotifyPlayer.style.transform = 'translateY(20px)';
-        setTimeout(() => {
-            spotifyPlayer.style.display = 'none';
-        }, 300);
-    }
-}
-
 function setOfflineStatus() {
     const discordStatus = document.getElementById('discord-status');
     if (discordStatus) {
@@ -455,10 +419,6 @@ function setOfflineStatus() {
         if (statusDot) {
             statusDot.className = 'status-dot offline';
         }
-    }
-
-    if (spotifyPlayer) {
-        spotifyPlayer.style.display = 'none';
     }
 }
 
@@ -533,30 +493,6 @@ function positionTooltip(e) {
     statusTooltip.style.top = `${Math.max(y, 10)}px`;
 }
 
-// Spotify Player Controls
-function initSpotifyPlayer() {
-    if (!spotifyToggle) return;
-
-    spotifyToggle.addEventListener('click', () => {
-        spotifyPlayer.classList.toggle('minimized');
-    });
-
-    // Auto-hide after inactivity
-    let inactivityTimer;
-    const resetInactivityTimer = () => {
-        clearTimeout(inactivityTimer);
-        inactivityTimer = setTimeout(() => {
-            if (!spotifyPlayer.classList.contains('minimized')) {
-                spotifyPlayer.classList.add('minimized');
-            }
-        }, 10000); // Hide after 10 seconds of inactivity
-    };
-
-    document.addEventListener('mousemove', resetInactivityTimer);
-    document.addEventListener('keypress', resetInactivityTimer);
-    resetInactivityTimer();
-}
-
 // Scroll to section function
 function scrollToSection(sectionId) {
     const section = document.querySelector(sectionId);
@@ -602,42 +538,30 @@ function initNavigation() {
     // Mobile menu toggle with enhanced animations
     navToggle.addEventListener('click', e => {
         e.stopPropagation();
-        const isActive = navToggle.classList.contains('active');
-
-        if (!isActive) {
-            // Opening menu
-            navToggle.classList.add('active');
-            navMenu.classList.add('active');
-            document.body.classList.add('nav-open');
-
-            // Animate menu items with optimized performance
-            const navLinks = navMenu.querySelectorAll('.nav-link');
-            navLinks.forEach((link, index) => {
-                link.style.opacity = '0';
-                link.style.transform = 'translateX(20px)';
-                setTimeout(() => {
-                    link.style.transition = 'all 0.3s ease';
-                    link.style.opacity = '1';
-                    link.style.transform = 'translateX(0)';
-                }, index * 50 + 100);
-            });
-        } else {
-            // Closing menu
-            closeNavMenu();
-        }
+        toggleMobileMenu();
     });
 
     // Close mobile menu when clicking on links
     document.querySelectorAll('.nav-link').forEach(link => {
-        link.addEventListener('click', () => {
-            closeNavMenu();
+        link.addEventListener('click', e => {
+            // Only close menu on mobile
+            if (window.innerWidth <= 768) {
+                closeMobileMenu();
+            }
         });
     });
 
     // Close mobile menu when clicking on backdrop
     document.addEventListener('click', e => {
         if (navMenu.classList.contains('active') && !navbar.contains(e.target)) {
-            closeNavMenu();
+            closeMobileMenu();
+        }
+    });
+
+    // Handle escape key
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && navMenu.classList.contains('active')) {
+            closeMobileMenu();
         }
     });
 
@@ -649,19 +573,22 @@ function initNavigation() {
         const currentScrollY = window.scrollY;
 
         if (navbar) {
-            if (currentScrollY > 100) {
+            // Add scrolled class for styling
+            if (currentScrollY > 50) {
                 navbar.classList.add('scrolled');
             } else {
                 navbar.classList.remove('scrolled');
             }
 
-            // Hide navbar on scroll down, show on scroll up (mobile optimization)
+            // Auto-hide navbar on mobile when scrolling down
             if (window.innerWidth <= 768) {
-                if (currentScrollY > lastScrollY && currentScrollY > 200) {
+                if (currentScrollY > lastScrollY && currentScrollY > 100) {
                     navbar.style.transform = 'translateY(-100%)';
                 } else {
                     navbar.style.transform = 'translateY(0)';
                 }
+            } else {
+                navbar.style.transform = 'translateY(0)';
             }
         }
 
@@ -680,10 +607,22 @@ function initNavigation() {
         ticking = false;
     };
 
+    // Throttled scroll listener
     window.addEventListener('scroll', () => {
         if (!ticking) {
             requestAnimationFrame(updateNavbar);
             ticking = true;
+        }
+    });
+
+    // Handle window resize
+    window.addEventListener('resize', () => {
+        if (window.innerWidth > 768 && navMenu.classList.contains('active')) {
+            closeMobileMenu();
+        }
+        // Reset navbar transform on desktop
+        if (window.innerWidth > 768) {
+            navbar.style.transform = 'translateY(0)';
         }
     });
 
@@ -696,12 +635,88 @@ function initNavigation() {
             });
         });
     }
+
+    // Initial call to set correct state
+    updateNavbar();
 }
 
-function closeNavMenu() {
+function toggleMobileMenu() {
+    const isActive = navToggle.classList.contains('active');
+
+    if (!isActive) {
+        openMobileMenu();
+    } else {
+        closeMobileMenu();
+    }
+}
+
+function openMobileMenu() {
+    navToggle.classList.add('active');
+    navMenu.classList.add('active');
+    document.body.classList.add('nav-open');
+
+    // Store current scroll position
+    const scrollY = window.scrollY;
+    document.body.style.top = `-${scrollY}px`;
+
+    // Animate menu items with staggered effect
+    const navLinks = navMenu.querySelectorAll('.nav-link');
+    const controls = navMenu.querySelector('.nav-controls');
+
+    navLinks.forEach((link, index) => {
+        link.style.opacity = '0';
+        link.style.transform = 'translateX(30px)';
+        setTimeout(() => {
+            link.style.transition = 'all 0.3s ease';
+            link.style.opacity = '1';
+            link.style.transform = 'translateX(0)';
+        }, index * 80 + 150);
+    });
+
+    // Animate controls
+    if (controls) {
+        controls.style.opacity = '0';
+        controls.style.transform = 'translateY(20px)';
+        setTimeout(() => {
+            controls.style.transition = 'all 0.3s ease';
+            controls.style.opacity = '1';
+            controls.style.transform = 'translateY(0)';
+        }, navLinks.length * 80 + 200);
+    }
+}
+
+function closeMobileMenu() {
     navToggle.classList.remove('active');
     navMenu.classList.remove('active');
     document.body.classList.remove('nav-open');
+
+    // Restore scroll position
+    const scrollY = document.body.style.top;
+    document.body.style.top = '';
+    if (scrollY) {
+        window.scrollTo(0, Number.parseInt(scrollY || '0') * -1);
+    }
+
+    // Reset animations
+    const navLinks = navMenu.querySelectorAll('.nav-link');
+    const controls = navMenu.querySelector('.nav-controls');
+
+    navLinks.forEach(link => {
+        link.style.transition = '';
+        link.style.opacity = '';
+        link.style.transform = '';
+    });
+
+    if (controls) {
+        controls.style.transition = '';
+        controls.style.opacity = '';
+        controls.style.transform = '';
+    }
+}
+
+// Legacy function for backward compatibility
+function closeNavMenu() {
+    closeMobileMenu();
 }
 
 // Update active navigation link
@@ -1055,7 +1070,6 @@ document.addEventListener('DOMContentLoaded', () => {
     initThemeToggle();
     initColorCustomization();
     initStatusTooltip();
-    initSpotifyPlayer();
     initSkills();
     initExperienceToggle();
     initProjects();
@@ -1115,7 +1129,7 @@ document.addEventListener('keydown', e => {
     // Close mobile menu with Escape key
     if (e.key === 'Escape') {
         if (navMenu.classList.contains('active')) {
-            closeNavMenu();
+            closeMobileMenu();
         }
         if (colorPanel.classList.contains('active')) {
             colorPanel.classList.remove('active');
