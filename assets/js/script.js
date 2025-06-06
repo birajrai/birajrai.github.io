@@ -7,10 +7,73 @@ const typingText = document.getElementById('typing-text');
 const skillsGrid = document.getElementById('skills-grid');
 const projectsGrid = document.getElementById('projects-grid');
 const themeToggle = document.getElementById('theme-toggle');
+const statusContainer = document.getElementById('status-container');
 
 // Global Variables
 let currentSkillCategory = 'frontend';
 let currentProjectFilter = 'all';
+
+// Experience Data
+const experienceData = [
+    {
+        title: 'Full Stack Developer',
+        company: 'Freelance',
+        period: '2022 - Present',
+        description:
+            'Developing web applications for various clients using modern technologies. Specialized in React, Node.js, and database design.',
+        skills: ['React', 'Node.js', 'MongoDB', 'Express.js'],
+        icon: 'fas fa-briefcase',
+    },
+    {
+        title: 'Discord Bot Developer',
+        company: 'Open Source Projects',
+        period: '2021 - Present',
+        description:
+            'Created and maintained Discord bots with advanced features including moderation, entertainment, and Minecraft server integration.',
+        skills: ['JavaScript', 'Discord.js', 'MongoDB', 'API Integration'],
+        icon: 'fas fa-code',
+    },
+    {
+        title: 'Self-Taught Developer',
+        company: 'Continuous Learning',
+        period: '2020 - 2022',
+        description:
+            'Started my programming journey with web development fundamentals, gradually expanding to full-stack development through online courses and projects.',
+        skills: ['HTML/CSS', 'JavaScript', 'Git', 'Problem Solving'],
+        icon: 'fas fa-laptop-code',
+    },
+];
+
+// Education Data
+const educationData = [
+    {
+        title: 'Computer Science Studies',
+        institution: 'Self-Directed Learning',
+        period: '2020 - 2024',
+        description:
+            'Comprehensive study of computer science fundamentals including algorithms, data structures, and software engineering principles through online platforms.',
+        skills: ['Algorithms', 'Data Structures', 'Software Engineering', 'System Design'],
+        icon: 'fas fa-graduation-cap',
+    },
+    {
+        title: 'Web Development Certification',
+        institution: 'FreeCodeCamp',
+        period: '2021',
+        description:
+            'Completed comprehensive web development curriculum covering frontend and backend technologies, responsive design, and modern frameworks.',
+        skills: ['HTML/CSS', 'JavaScript', 'React', 'Node.js'],
+        icon: 'fas fa-certificate',
+    },
+    {
+        title: 'High School',
+        institution: 'Science Stream',
+        period: '2018 - 2020',
+        description:
+            'Completed high school education with focus on mathematics and science, which provided a strong foundation for logical thinking and problem-solving.',
+        skills: ['Mathematics', 'Physics', 'Chemistry', 'Computer Science'],
+        icon: 'fas fa-book',
+    },
+];
 
 // Skills Data
 const skillsData = {
@@ -185,6 +248,85 @@ function animateCounters() {
     });
 }
 
+// Status Fetcher
+async function fetchDiscordStatus() {
+    try {
+        const response = await fetch('https://discord-user-status.onrender.com/user/835126233455919164/');
+        const data = await response.json();
+
+        if (statusContainer) {
+            renderStatus(data);
+        }
+    } catch (error) {
+        console.log('Status API not available:', error);
+        if (statusContainer) {
+            statusContainer.innerHTML = `
+        <div class="status-card offline">
+          <div class="status-indicator offline"></div>
+          <div class="status-info">
+            <span class="status-text">Currently Offline</span>
+            <span class="status-subtext">Status unavailable</span>
+          </div>
+        </div>
+      `;
+        }
+    }
+}
+
+function renderStatus(data) {
+    if (!statusContainer) return;
+
+    const statusColors = {
+        online: '#10b981',
+        idle: '#f59e0b',
+        dnd: '#ef4444',
+        offline: '#6b7280',
+    };
+
+    let statusHTML = `
+    <div class="status-card ${data.status}">
+      <div class="status-indicator ${data.status}" style="background-color: ${statusColors[data.status]}"></div>
+      <div class="status-info">
+        <span class="status-text">${data.status.charAt(0).toUpperCase() + data.status.slice(1)}</span>
+  `;
+
+    // Add custom status if available
+    if (data.custom_status) {
+        statusHTML += `<span class="status-subtext">${data.custom_status}</span>`;
+    }
+
+    // Add activity if available
+    if (data.activities && data.activities.length > 0) {
+        const activity = data.activities[0];
+        statusHTML += `<span class="status-activity">${activity.type} ${activity.name}</span>`;
+    }
+
+    statusHTML += `
+      </div>
+    </div>
+  `;
+
+    // Add Spotify if available
+    if (data.spotify) {
+        statusHTML += `
+      <div class="spotify-card">
+        <div class="spotify-info">
+          <img src="${data.spotify.album_art_url}" alt="Album Art" class="spotify-album">
+          <div class="spotify-details">
+            <span class="spotify-song">${data.spotify.song}</span>
+            <span class="spotify-artist">by ${data.spotify.artist}</span>
+          </div>
+        </div>
+        <div class="spotify-icon">
+          <i class="fab fa-spotify"></i>
+        </div>
+      </div>
+    `;
+    }
+
+    statusContainer.innerHTML = statusHTML;
+}
+
 // Scroll to section function
 function scrollToSection(sectionId) {
     const section = document.querySelector(sectionId);
@@ -231,6 +373,7 @@ function initNavigation() {
     navToggle.addEventListener('click', () => {
         navToggle.classList.toggle('active');
         navMenu.classList.toggle('active');
+        document.body.classList.toggle('nav-open');
     });
 
     // Close mobile menu when clicking on links
@@ -238,7 +381,17 @@ function initNavigation() {
         link.addEventListener('click', () => {
             navToggle.classList.remove('active');
             navMenu.classList.remove('active');
+            document.body.classList.remove('nav-open');
         });
+    });
+
+    // Close mobile menu when clicking outside
+    document.addEventListener('click', e => {
+        if (!navbar.contains(e.target) && navMenu.classList.contains('active')) {
+            navToggle.classList.remove('active');
+            navMenu.classList.remove('active');
+            document.body.classList.remove('nav-open');
+        }
     });
 
     // Navbar scroll effect
@@ -369,6 +522,66 @@ function initExperienceToggle() {
             });
         });
     });
+
+    // Render experience and education
+    renderExperience();
+    renderEducation();
+}
+
+function renderExperience() {
+    const experienceTimeline = document.getElementById('experience-timeline');
+    if (!experienceTimeline) return;
+
+    experienceTimeline.innerHTML = experienceData
+        .map(
+            item => `
+    <div class="timeline-item">
+      <div class="timeline-marker">
+        <i class="${item.icon}"></i>
+      </div>
+      <div class="timeline-content">
+        <div class="timeline-header">
+          <h3>${item.title}</h3>
+          <span class="timeline-date">${item.period}</span>
+        </div>
+        <h4>${item.company}</h4>
+        <p>${item.description}</p>
+        <div class="timeline-skills">
+          ${item.skills.map(skill => `<span>${skill}</span>`).join('')}
+        </div>
+      </div>
+    </div>
+  `
+        )
+        .join('');
+}
+
+function renderEducation() {
+    const educationTimeline = document.getElementById('education-timeline');
+    if (!educationTimeline) return;
+
+    educationTimeline.innerHTML = educationData
+        .map(
+            item => `
+    <div class="timeline-item">
+      <div class="timeline-marker">
+        <i class="${item.icon}"></i>
+      </div>
+      <div class="timeline-content">
+        <div class="timeline-header">
+          <h3>${item.title}</h3>
+          <span class="timeline-date">${item.period}</span>
+        </div>
+        <h4>${item.institution}</h4>
+        <p>${item.description}</p>
+        <div class="timeline-skills">
+          ${item.skills.map(skill => `<span>${skill}</span>`).join('')}
+        </div>
+      </div>
+    </div>
+  `
+        )
+        .join('');
 }
 
 // Projects Section
@@ -441,6 +654,20 @@ function renderProjects() {
     }, 100);
 }
 
+// Download Resume
+function downloadResume() {
+    // Create a temporary link element
+    const link = document.createElement('a');
+    link.href = '/assets/resume/Biraj_Rai_Resume.pdf'; // Update this path to your actual resume file
+    link.download = 'Biraj_Rai_Resume.pdf';
+    link.target = '_blank';
+
+    // Trigger download
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
 // Scroll Animations
 function initScrollAnimations() {
     const observerOptions = {
@@ -504,6 +731,10 @@ document.addEventListener('DOMContentLoaded', () => {
     initProjects();
     initSmoothScrolling();
     initParallax();
+    fetchDiscordStatus();
+
+    // Refresh status every 30 seconds
+    setInterval(fetchDiscordStatus, 30000);
 });
 
 // Handle page visibility change
@@ -549,6 +780,13 @@ window.addEventListener('error', e => {
 document.addEventListener('keydown', e => {
     if (e.key === 'Tab') {
         document.body.classList.add('keyboard-navigation');
+    }
+
+    // Close mobile menu with Escape key
+    if (e.key === 'Escape' && navMenu.classList.contains('active')) {
+        navToggle.classList.remove('active');
+        navMenu.classList.remove('active');
+        document.body.classList.remove('nav-open');
     }
 });
 
