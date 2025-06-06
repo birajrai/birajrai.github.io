@@ -439,7 +439,7 @@ body {
     font-size: 3.5rem;
     font-weight: 800;
     line-height: 1.1;
-    margin-bottom: 1rem;
+    /* margin-bottom: 1rem; */
     background: linear-gradient(270deg, var(--text-primary), var(--primary-color), var(--text-primary));
     background-size: 300% 300%;
     animation: smoothGradient 8s ease-in-out infinite;
@@ -480,13 +480,13 @@ body {
     font-size: 1.125rem;
     color: var(--text-secondary);
     line-height: 1.7;
-    margin-bottom: 2rem;
+    /* margin-bottom: 2rem; */
 }
 
 .hero-stats {
     display: flex;
     gap: 2rem;
-    margin-bottom: 2rem;
+    /* margin-bottom: 2rem; */
 }
 
 .stat {
