@@ -2699,19 +2699,6 @@ body {
     }
 }
 
-/* Focus Styles for Accessibility */
-.nav-link:focus,
-.theme-toggle:focus,
-.color-toggle:focus,
-.nav-toggle:focus,
-.btn:focus,
-.skill-item:focus,
-.project-btn:focus {
-    outline: 2px solid var(--primary-color);
-    outline-offset: 2px;
-    border-radius: var(--radius-md);
-}
-
 /* Touch Device Optimizations */
 @media (hover: none) and (pointer: coarse) {
     .nav-link {
