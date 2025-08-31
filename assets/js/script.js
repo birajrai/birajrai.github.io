@@ -104,74 +104,62 @@ const skillsData = {
 const projectsData = [
     {
         id: 1,
-        title: 'Lanya Discord Bot',
+        title: 'Mero Patra',
         description:
-            'Advanced Discord bot with moderation, entertainment, and Minecraft server integration. Features include custom commands, auto-moderation, music playback, and server statistics.',
-        image: 'https://placehold.co/600x400/5865F2/ffffff?text=Lanya+Bot',
-        technologies: ['JavaScript', 'Discord.js', 'MongoDB', 'Node.js'],
-        category: 'bot',
-        liveUrl: 'https://discord.gg/5q8jrp4cj5',
-        githubUrl: 'https://github.com/birajrai/lanya',
+            'A modern, responsive website for Mero Patra, a Nepali news portal. Built with Next.js and TailwindCSS, it features a headless WordPress CMS for dynamic content management.',
+        image: '/assets/img/projects/meropatra.avif',
+        technologies: ['PHP', 'MySQL', 'JavaScript', 'CSS'],
+        category: 'web',
+        liveUrl: 'https://www.meropatra.com/',
+        githubUrl: '',
         featured: true,
     },
     {
         id: 2,
-        title: 'Imagizer Tool',
+        title: 'DaPirates',
         description:
-            'Powerful image processing and manipulation tool with features like resizing, format conversion, compression, and batch processing capabilities.',
-        image: 'https://placehold.co/600x400/EC4899/ffffff?text=Imagizer',
-        technologies: ['Node.js', 'Express.js', 'Sharp', 'Multer'],
-        category: 'tool',
-        liveUrl: '#',
-        githubUrl: 'https://github.com/birajrai/imagizer',
+            'A website for DaPirates, a creative agency, showcasing their portfolio and services. Built with modern web technologies for a sleek and responsive user experience.',
+        image: '/assets/img/projects/dapirates.avif',
+        technologies: ['Astro.js', 'HTML', 'CSS', 'JavaScript'],
+        category: 'web',
+        liveUrl: 'https://dapirates.xyz/',
+        githubUrl: '',
         featured: true,
     },
     {
         id: 3,
-        title: 'KiraSMP Server',
+        title: 'Janaprabhat',
         description:
-            'Minecraft SMP server management system with custom plugins, player statistics, economy system, and automated server maintenance.',
-        image: 'https://placehold.co/600x400/22C55E/ffffff?text=KiraSMP',
-        technologies: ['Java', 'Spigot', 'MySQL', 'YAML'],
-        category: 'tool',
-        liveUrl: 'https://modrinth.com/plugin/kirasmp',
-        githubUrl: 'https://github.com/birajrai/kirasmp',
+            'Official website for Janaprabhat Secondary School, providing information about the school, its programs, and activities. Designed for easy navigation and accessibility.',
+        image: '/assets/img/projects/janaprabhat.avif',
+        technologies: ['Astro.js', 'HTML', 'CSS', 'JavaScript'],
+        category: 'web',
+        liveUrl: 'https://www.janaprabhat.edu.np/',
+        githubUrl: '',
         featured: true,
     },
     {
         id: 4,
-        title: 'Mero Patra',
+        title: 'Kali Pokhari',
         description:
-            'A modern, responsive website for Mero Patra, a Nepali news portal. Built with Next.js and TailwindCSS, it features a headless WordPress CMS for dynamic content management.',
-        image: 'https://placehold.co/600x400/6366f1/ffffff?text=Mero Patra',
-        technologies: ['NextJs', 'TailwindCSS', 'WordPress Headless CMS'],
+            'A promotional website for Kali Pokhari, a local tourist destination, featuring attractions, gallery, and contact information. Aims to boost local tourism.',
+        image: '/assets/img/projects/kalipokhari.avif',
+        technologies: ['WordPress', 'HTML', 'CSS', 'JavaScript'],
         category: 'web',
-        liveUrl: 'https://www.meropatra.com/',
-        githubUrl: '#',
+        liveUrl: 'https://kalipokhari.com/',
+        githubUrl: '',
         featured: false,
     },
     {
         id: 5,
-        title: 'Task Manager App',
+        title: 'Raksirang Development Org',
         description:
-            'Full-stack task management application with user authentication, real-time updates, and collaborative features for team productivity.',
-        image: 'https://placehold.co/600x400/8B5CF6/ffffff?text=Task+Manager',
-        technologies: ['React', 'Node.js', 'MongoDB', 'Socket.io'],
+            'Website for RDO (Rural Development Organization), an NGO working on community development projects. Showcases their mission, projects, and impact.',
+        image: '/assets/img/projects/rdo.avif',
+        technologies: ['WordPress', 'HTML', 'CSS', 'JavaScript'],
         category: 'web',
-        liveUrl: '#',
-        githubUrl: '#',
-        featured: false,
-    },
-    {
-        id: 6,
-        title: 'Weather Checker',
-        description:
-            'Interactive weather dashboard with location-based forecasts, weather maps, and historical data visualization using modern APIs.',
-        image: 'https://placehold.co/600x400/F59E0B/ffffff?text=Weather+App',
-        technologies: ['Vue.js', 'Chart.js', 'Weather API', 'Tailwind'],
-        category: 'web',
-        liveUrl: 'https://birajrai.github.io/weather-app/',
-        githubUrl: 'https://github.com/birajrai/weather-app',
+        liveUrl: 'https://raksirangdevelopment.org.np/',
+        githubUrl: '',
         featured: false,
     },
 ];
@@ -858,10 +846,10 @@ function renderProjects() {
                         <i class="fas fa-external-link-alt"></i>
                         Live Demo
                     </a>
-                    <a href="${project.githubUrl}" target="_blank" class="project-btn">
+                    ${project.githubUrl ? `<a href="${project.githubUrl}" target="_blank" class="project-btn">
                         <i class="fab fa-github"></i>
                         Code
-                    </a>
+                    </a>` : ''}
                 </div>
             </div>
             <div class="project-content">
