@@ -71,8 +71,7 @@ body {
   color: var(--text-primary);
   background-color: var(--bg-primary);
   overflow-x: hidden;
-  transition: background-color var(--transition-normal),
-    color var(--transition-normal);
+  transition: background-color var(--transition-normal), color var(--transition-normal);
 }
 
 /* Performance optimizations for mobile */
@@ -283,6 +282,7 @@ body {
 
 /* Mobile Styles - Minimal Header */
 @media (max-width: 768px) {
+
   html,
   body {
     overflow-x: hidden;
@@ -582,8 +582,7 @@ body {
     width: 280px;
     right: -280px;
     transform: translateX(100%);
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-      right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .color-panel.active {
@@ -737,12 +736,7 @@ body {
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.2),
-    transparent
-  );
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
   transition: left 0.5s ease;
 }
 
@@ -751,11 +745,7 @@ body {
 }
 
 .btn-primary {
-  background: linear-gradient(
-    135deg,
-    var(--primary-color),
-    var(--primary-light)
-  );
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
   color: white;
 }
 
@@ -899,11 +889,7 @@ body {
 .shape {
   position: absolute;
   border-radius: 50%;
-  background: linear-gradient(
-    135deg,
-    var(--primary-color),
-    var(--primary-light)
-  );
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
   opacity: 0.1;
   animation: float 6s ease-in-out infinite;
   will-change: transform;
@@ -934,6 +920,7 @@ body {
 }
 
 @keyframes float {
+
   0%,
   100% {
     transform: translateY(0px);
@@ -974,6 +961,7 @@ body {
 }
 
 @keyframes wave {
+
   0%,
   50%,
   100% {
@@ -1012,12 +1000,7 @@ body {
   font-size: 3.5rem;
   font-weight: 800;
   line-height: 1.1;
-  background: linear-gradient(
-    270deg,
-    var(--text-primary),
-    var(--primary-color),
-    var(--text-primary)
-  );
+  background: linear-gradient(270deg, var(--text-primary), var(--primary-color), var(--text-primary));
   background-size: 300% 300%;
   animation: smoothGradient 8s ease-in-out infinite;
   -webkit-background-clip: text;
@@ -1043,6 +1026,7 @@ body {
 }
 
 @keyframes blink {
+
   0%,
   50% {
     opacity: 1;
@@ -1138,17 +1122,14 @@ body {
   left: -2rem;
   right: -2rem;
   bottom: -2rem;
-  background: linear-gradient(
-    135deg,
-    var(--primary-color),
-    var(--primary-light)
-  );
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
   border-radius: 50%;
   opacity: 0.1;
   animation: pulse 3s ease-in-out infinite;
 }
 
 @keyframes pulse {
+
   0%,
   100% {
     transform: scale(1);
@@ -1177,11 +1158,7 @@ body {
   right: 0;
   bottom: 0;
   border-radius: 50%;
-  background: linear-gradient(
-    135deg,
-    var(--primary-color),
-    var(--primary-light)
-  );
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
   opacity: 0;
   transition: opacity var(--transition-normal);
   display: flex;
@@ -1217,6 +1194,7 @@ body {
 }
 
 @keyframes bounce {
+
   0%,
   20%,
   50%,
@@ -1348,6 +1326,7 @@ body {
   }
 
   @keyframes floatMobile {
+
     0%,
     100% {
       transform: translateY(0px);
@@ -1360,6 +1339,7 @@ body {
 }
 
 @media (max-width: 480px) {
+
   /* Further adjustments for smaller mobile screens */
   .hero {
     padding: 3rem 0 1.5rem 0;
@@ -1491,11 +1471,7 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(
-    135deg,
-    var(--primary-color),
-    var(--primary-light)
-  );
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
   opacity: 0;
   transition: opacity var(--transition-normal);
   display: flex;
@@ -2023,11 +1999,7 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(
-    135deg,
-    var(--primary-color),
-    var(--primary-light)
-  );
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
   opacity: 0;
   transition: opacity var(--transition-normal);
   display: flex;
@@ -2275,11 +2247,7 @@ body {
 .email-icon {
   width: 4rem;
   height: 4rem;
-  background: linear-gradient(
-    135deg,
-    var(--primary-color),
-    var(--primary-light)
-  );
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
   color: white;
   border-radius: 50%;
   display: flex;
@@ -2310,6 +2278,7 @@ body {
 }
 
 @keyframes pulse {
+
   0%,
   100% {
     transform: scale(1);
@@ -2718,6 +2687,7 @@ body {
 
 /* Reduced Motion */
 @media (prefers-reduced-motion: reduce) {
+
   .nav-link,
   .theme-toggle,
   .color-toggle,
@@ -2735,6 +2705,7 @@ body {
 
 /* Touch Device Optimizations */
 @media (hover: none) and (pointer: coarse) {
+
   html,
   body {
     overflow-x: hidden;
@@ -2778,7 +2749,8 @@ body {
 }
 
 /* High DPI Displays */
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+@media (-webkit-min-device-pixel-ratio: 2),
+(min-resolution: 192dpi) {
   .navbar {
     border-bottom-width: 0.5px;
   }
@@ -2860,6 +2832,7 @@ body {
 
 /* Print Styles */
 @media print {
+
   .navbar,
   .nav-toggle,
   .color-panel,
