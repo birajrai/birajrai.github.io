@@ -891,9 +891,9 @@ body {
 .hero-content {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 4rem;
     align-items: center;
-    width: 100%;
+    gap: 4rem;
+    text-align: left;
 }
 
 .hero-text {
@@ -1059,12 +1059,15 @@ body {
 
 .hero-image {
     animation: slideInRight 1s ease-out;
+    justify-self: center;
+    max-width: 400px;
+    width: 100%;
 }
 
 .image-container {
     position: relative;
     width: 100%;
-    max-width: 400px;
+    padding-bottom: 100%;
     margin: 0 auto;
 }
 
@@ -1094,9 +1097,12 @@ body {
 
 .profile-img {
     width: 100%;
-    height: auto;
+    height: 100%;
+    object-fit: cover;
     border-radius: 50%;
-    position: relative;
+    position: absolute;
+    top: 0;
+    left: 0;
     z-index: 2;
 }
 
@@ -1271,7 +1277,6 @@ body {
 /* Mobile Hero Section */
 @media (max-width: 768px) {
     .hero {
-        /* General hero container adjustments */
         padding: 3rem 0 1.5rem 0;
         min-height: auto;
     }
@@ -1284,10 +1289,9 @@ body {
     }
 
     .hero-image {
-        /* Order image above text on mobile */
         order: -1;
         margin-bottom: 1.5rem;
-        /* Add some space below image */
+        max-width: 250px;
     }
 
     .image-container {
@@ -1314,18 +1318,15 @@ body {
 
     .hero-title {
         font-size: 2rem;
-        /* Smaller title on mobile */
     }
 
     .hero-subtitle {
-        /* Adjust subtitle for mobile */
         font-size: 0.95rem;
         margin-bottom: 1rem;
         min-height: auto;
     }
 
     .hero-description {
-        /* Adjust description for mobile */
         font-size: 0.9rem;
         line-height: 1.4;
         margin-bottom: 1rem;
@@ -1346,7 +1347,6 @@ body {
     }
 
     .hero-buttons {
-        /* Adjust button layout for mobile */
         flex-direction: column;
         align-items: center;
         gap: 1rem;
@@ -1355,13 +1355,11 @@ body {
     }
 
     .hero-social {
-        /* Center social icons */
         justify-content: center;
         gap: 0.75rem;
     }
 
     .social-link {
-        /* Adjust size of social links */
         width: 2.5rem;
         height: 2.5rem;
     }
@@ -1370,10 +1368,8 @@ body {
         bottom: 1rem;
     }
 
-    /* Optimized mobile animations */
     .hero-text,
     .hero-image {
-        /* Disable animations for better performance */
         animation: none;
         transform: none !important;
         opacity: 1 !important;
