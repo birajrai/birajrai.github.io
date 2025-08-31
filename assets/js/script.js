@@ -363,9 +363,6 @@ function loadSavedColors() {
     }
 }
 
-// Enhanced Discord Status with Tooltips
-
-
 // Scroll to section function
 function scrollToSection(sectionId) {
     const section = document.querySelector(sectionId);
