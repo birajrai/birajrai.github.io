@@ -430,6 +430,12 @@ body {
     overflow-y: auto;
 }
 
+@media (max-width: 768px) {
+    .color-panel {
+        display: none;
+    }
+}
+
 .color-panel.active {
     right: 0;
 }
@@ -1062,7 +1068,8 @@ body {
     justify-self: center;
     max-width: 400px;
     width: 100%;
-    margin-top: -100px; /* Adjusted to move further upward */
+    margin-top: -100px;
+    /* Adjusted to move further upward */
 }
 
 .image-container {
