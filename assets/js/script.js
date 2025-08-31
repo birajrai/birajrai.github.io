@@ -879,16 +879,11 @@ document.addEventListener('DOMContentLoaded', () => {
     initNavigation();
     initThemeToggle();
     initColorCustomization();
-    initStatusTooltip();
     initSkills();
     initExperienceToggle();
     initProjects();
     initSmoothScrolling();
     initParallax();
-    fetchDiscordStatus();
-
-    // Refresh status every 30 seconds
-    setInterval(fetchDiscordStatus, 30000);
 });
 
 // Handle page visibility change
