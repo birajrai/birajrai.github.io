@@ -166,10 +166,9 @@ const projectsData = [
 
 // Typing Animation
 const typingTexts = [
-    'Full Stack Developer',
-    'Code Artist',
-    'DevOps Enthusiast',
     'Tech Enthusiast',
+    'DevOps Enthusiast',
+    'Full Stack Engineer',
     'Open Source Contributor',
 ];
 
