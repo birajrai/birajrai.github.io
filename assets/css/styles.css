@@ -1,6 +1,5 @@
 /* CSS Reset and Base Styles */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Roboto:wght@400;500&display=swap');
-;
 
 * {
     margin: 0;
@@ -29,7 +28,6 @@
 
     /* Typography */
     --font-primary: 'Poppins', 'Roboto', sans-serif;
-    ;
 
     /* Spacing */
     --container-max-width: 1200px;
@@ -368,8 +366,9 @@ body {
         display: flex;
     }
 
-    /* Minimal Mobile backdrop */
-    body.nav-open::before {
+    /* Mobile backdrop */
+    body.nav-open::before,
+    body.panel-open::before {
         content: '';
         position: fixed;
         top: 0;
@@ -381,10 +380,6 @@ body {
         opacity: 1;
     }
 
-    /* Prevent body scroll when menu is open */
-    body.nav-open {
-        overflow: hidden;
-    }
 }
 
 /* Small Mobile Devices - Even More Minimal */
@@ -554,8 +549,8 @@ body {
 /* Mobile Color Panel */
 @media (max-width: 768px) {
     .color-panel {
-        width: 100%;
-        right: -100%;
+        width: 280px;
+        right: -280px;
     }
 
     .color-panel-header {
@@ -577,6 +572,22 @@ body {
 
     .theme-preset {
         padding: 0.75rem;
+    }
+
+    .color-input-group label {
+        font-size: 0.9rem;
+    }
+
+    .color-input-group input[type='color'] {
+        width: 40px;
+        height: 30px;
+    }
+}
+
+@media (max-width: 480px) {
+    .color-panel {
+        width: 100%;
+        right: -100%;
     }
 }
 
@@ -813,7 +824,6 @@ body {
     align-items: center;
     display: flex;
     position: relative;
-    overflow: hidden;
     padding: 5rem 0 0 0;
     z-index: 1;
 }
@@ -1361,8 +1371,6 @@ body {
     }
 
     /* Optimized mobile animations */
-    ;
-
     .hero-text,
     .hero-image {
         /* Disable animations for better performance */
@@ -1396,8 +1404,6 @@ body {
         gap: 1.5rem;
         /* Reduce gap further */
     }
-
-    .hero-content {}
 
     .hero-title {
         font-size: 1.75rem;
@@ -2649,11 +2655,6 @@ body {
     .projects-grid {
         grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     }
-
-    .color-panel {
-        width: 100%;
-        right: -100%;
-    }
 }
 
 /* Responsive Hero Section Adjustments */
@@ -2675,8 +2676,6 @@ body {
         max-width: 350px;
     }
 }
-
-
 
 /* Animation Classes */
 .fade-in {
