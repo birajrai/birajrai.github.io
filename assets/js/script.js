@@ -10,12 +10,12 @@ const themeToggle = document.getElementById('theme-toggle');
 const colorToggle = document.getElementById('color-toggle');
 const colorPanel = document.getElementById('color-panel');
 const colorPanelClose = document.getElementById('color-panel-close');
-const statusTooltip = document.getElementById('status-tooltip');
+
 
 // Global Variables
 let currentSkillCategory = 'frontend';
 let currentProjectFilter = 'all';
-let currentDiscordData = null;
+
 
 // Color Themes
 const colorThemes = {
@@ -364,121 +364,7 @@ function loadSavedColors() {
 }
 
 // Enhanced Discord Status with Tooltips
-async function fetchDiscordStatus() {
-    try {
-        const response = await fetch('https://discordstatus.dapirates.xyz/user/835126233455919164/');
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        currentDiscordData = data;
-
-        // Update Discord status in hero with animation
-        updateHeroStatus(data);
-
-        console.log('✅ Discord status updated successfully');
-    } catch (error) {
-        console.log('⚠️ Status API not available:', error.message);
-        setOfflineStatus();
-    }
-}
-
-function updateHeroStatus(data) {
-    const discordStatus = document.getElementById('discord-status');
-    if (!discordStatus) return;
-
-    const statusDot = discordStatus.querySelector('.status-dot');
-    if (statusDot) {
-        statusDot.style.opacity = '0';
-        setTimeout(() => {
-            statusDot.className = `status-dot ${data.status}`;
-            statusDot.style.opacity = '1';
-        }, 150);
-    }
-}
-
-function setOfflineStatus() {
-    const discordStatus = document.getElementById('discord-status');
-    if (discordStatus) {
-        const statusDot = discordStatus.querySelector('.status-dot');
-        if (statusDot) {
-            statusDot.className = 'status-dot offline';
-        }
-    }
-}
-
-// Discord Status Tooltip
-function initStatusTooltip() {
-    const discordStatus = document.getElementById('discord-status');
-    if (!discordStatus || !statusTooltip) return;
-
-    let tooltipTimeout;
-
-    discordStatus.addEventListener('mouseenter', () => {
-        if (currentDiscordData) {
-            showStatusTooltip(currentDiscordData);
-        }
-    });
-
-    discordStatus.addEventListener('mouseleave', () => {
-        hideStatusTooltip();
-    });
-
-    discordStatus.addEventListener('mousemove', e => {
-        if (statusTooltip.classList.contains('visible')) {
-            positionTooltip(e);
-        }
-    });
-}
-
-function showStatusTooltip(data) {
-    if (!statusTooltip) return;
-
-    const tooltipIndicator = statusTooltip.querySelector('.tooltip-indicator');
-    const tooltipText = statusTooltip.querySelector('.tooltip-text');
-    const tooltipActivity = statusTooltip.querySelector('.tooltip-activity');
-    const tooltipTime = statusTooltip.querySelector('.tooltip-time');
-
-    // Update tooltip content
-    tooltipIndicator.className = `tooltip-indicator ${data.status}`;
-    tooltipText.textContent = data.status.charAt(0).toUpperCase() + data.status.slice(1);
-
-    // Add custom status if available
-    if (data.custom_status) {
-        tooltipActivity.textContent = data.custom_status;
-        tooltipActivity.style.display = 'block';
-    } else if (data.activities && data.activities.length > 0) {
-        const activity = data.activities[0];
-        tooltipActivity.textContent = `${activity.type} ${activity.name}`;
-        tooltipActivity.style.display = 'block';
-    } else {
-        tooltipActivity.style.display = 'none';
-    }
-
-    // Add timestamp
-    tooltipTime.textContent = `Last updated: ${new Date().toLocaleTimeString()}`;
-
-    statusTooltip.classList.add('visible');
-}
-
-function hideStatusTooltip() {
-    if (statusTooltip) {
-        statusTooltip.classList.remove('visible');
-    }
-}
-
-function positionTooltip(e) {
-    if (!statusTooltip) return;
-
-    const rect = statusTooltip.getBoundingClientRect();
-    const x = e.clientX + 10;
-    const y = e.clientY - rect.height - 10;
-
-    statusTooltip.style.left = `${Math.min(x, window.innerWidth - rect.width - 10)}px`;
-    statusTooltip.style.top = `${Math.max(y, 10)}px`;
-}
 
 // Scroll to section function
 function scrollToSection(sectionId) {
