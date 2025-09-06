@@ -501,6 +501,8 @@ body {
     gap: 1.25rem;
     margin-bottom: 2rem;
     padding: 0 1rem;
+    position: relative;
+    z-index: 15;
   }
 
   .social-link {
@@ -528,10 +530,13 @@ body {
 
   /* Enhanced scroll indicator */
   .scroll-indicator {
-    bottom: 2rem;
-    font-size: 0.85rem;
+    display: block;
+    bottom: 0.5rem;
+    font-size: 0.8rem;
     color: var(--text-muted);
-    opacity: 0.8;
+    opacity: 0.9;
+    z-index: 5;
+    position: absolute;
   }
 
   .scroll-text {
