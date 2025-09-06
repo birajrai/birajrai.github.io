@@ -1324,6 +1324,8 @@ body {
   color: var(--text-secondary);
   cursor: pointer;
   z-index: 10;
+  display: none;
+  /* Hidden by default on desktop */
 }
 
 .scroll-text {
@@ -1382,16 +1384,9 @@ body {
 @media (max-width: 768px) {
   html {
     scroll-padding-top: 0;
-  }
-
-  .hero {
-    min-height: 100vh;
-    padding: 2rem 0 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-    position: relative;
+    /* Improved mobile scroll behavior */
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
   }
 
   /* Hide all background shapes on mobile */
@@ -1597,31 +1592,39 @@ body {
     box-shadow: 0 6px 20px rgba(99, 102, 241, 0.3);
   }
 
+  /* Enhanced scroll indicator */
   .scroll-indicator {
-    bottom: 2rem;
-    font-size: 0.85rem;
+    display: block;
+    bottom: 1.5rem;
+    font-size: 0.8rem;
     color: var(--text-muted);
-    opacity: 0.8;
+    opacity: 0.9;
   }
 
   .scroll-text {
     font-weight: 500;
-    margin-bottom: 0.75rem;
-    letter-spacing: 0.5px;
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.3px;
+    font-size: 0.75rem;
   }
 
   .scroll-arrow {
-    font-size: 1.2rem;
+    font-size: 1rem;
     animation: bounce 2s infinite;
   }
 
-  /* Remove all animations on mobile for better performance */
+  /* Remove problematic animations on mobile for better scroll performance */
   .hero-text,
   .hero-image,
   .shape,
   * {
     animation: none !important;
     transform: none !important;
+  }
+
+  /* Re-enable only essential animations */
+  .scroll-arrow {
+    animation: bounce 2s infinite !important;
   }
 }
 
@@ -3242,5 +3245,12 @@ body {
   .image-overlay,
   .about-img-overlay {
     display: none;
+  }
+}
+
+/* Improved desktop scroll indicator - completely hidden */
+@media (min-width: 769px) {
+  .scroll-indicator {
+    display: none !important;
   }
 }
