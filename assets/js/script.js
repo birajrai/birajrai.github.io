@@ -10,7 +10,6 @@ const themeToggle = document.getElementById("theme-toggle")
 const colorToggle = document.getElementById("color-toggle")
 const colorPanel = document.getElementById("color-panel")
 const colorPanelClose = document.getElementById("color-panel-close")
-const scrollIndicator = document.querySelector(".scroll-indicator")
 
 // Global Variables
 let currentSkillCategory = "frontend"
@@ -952,31 +951,6 @@ document.addEventListener("DOMContentLoaded", () => {
   initProjects()
   initSmoothScrolling()
   initParallax()
-
-  if (scrollIndicator) {
-    scrollIndicator.addEventListener("click", () => {
-      const aboutSection = document.querySelector("#about")
-      if (aboutSection) {
-        aboutSection.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        })
-      }
-    })
-
-    let hasScrolled = false
-    window.addEventListener("scroll", () => {
-      if (!hasScrolled && window.scrollY > 100) {
-        hasScrolled = true
-        if (window.innerWidth <= 768) {
-          scrollIndicator.style.opacity = "0.5"
-          setTimeout(() => {
-            scrollIndicator.style.display = "none"
-          }, 1000)
-        }
-      }
-    })
-  }
 
   if (window.innerWidth <= 768) {
     // Disable smooth scrolling on mobile for better performance
