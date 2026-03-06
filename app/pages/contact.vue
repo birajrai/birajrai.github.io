@@ -11,7 +11,7 @@
         target="_blank"
         class="flex items-center gap-4 p-4 border border-gray-200 rounded-xl hover:border-gray-400 hover:shadow-md transition-all"
       >
-        <span class="text-2xl">{{ social.icon }}</span>
+        <Icon :name="social.icon" :class="social.color" size="28" />
         <span class="font-medium">{{ social.name }}</span>
       </a>
     </div>
@@ -20,11 +20,11 @@
 
 <script setup lang="ts">
 const socials = [
-  { name: 'Email', icon: '📧', link: '#' },
-  { name: 'Facebook', icon: '📘', link: '#' },
-  { name: 'GitHub', icon: '🐙', link: '#' },
-  { name: 'Instagram', icon: '📷', link: '#' },
-  { name: 'LinkedIn', icon: '💼', link: '#' }
+  { name: 'Email', icon: 'mdi:email', link: '#', color: 'text-gray-500 hover:text-red-500' },
+  { name: 'Facebook', icon: 'mdi:facebook', link: '#', color: 'text-gray-500 hover:text-blue-600' },
+  { name: 'GitHub', icon: 'mdi:github', link: '#', color: 'text-gray-500 hover:text-black' },
+  { name: 'Instagram', icon: 'mdi:instagram', link: '#', color: 'text-gray-500 hover:text-pink-600' },
+  { name: 'LinkedIn', icon: 'mdi:linkedin', link: '#', color: 'text-gray-500 hover:text-blue-700' }
 ]
 
 useSeoMeta({
